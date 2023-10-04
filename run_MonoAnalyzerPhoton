@@ -1,0 +1,20 @@
+#!/bin/bash
+
+input_file="/eos/cms/store/user/srimanob/monopole/13TeV/Legacy-NTUPLE-v2/merges/"
+#input_file="/afs/cern.ch/user/t/tmenezes/work/private/CMSSW_10_6_23/src/Monopoles/MonoAnalysis/bin/output/"
+
+#years=("2018" "2017" "2016" "2016APV")
+#masses=("1000" "1500" "2000" "2500" "3000" "3500" "4000" "4500")
+
+years=("2018")
+masses=("1000" "1500" "2000" "2500" "3000" "3500" "4000" "4500")
+
+
+for year in "${years[@]}"
+do
+   for mass in "${masses[@]}"
+   do
+     root -l -q "/afs/cern.ch/user/t/tmenezes/work/private/CMSSW_10_6_23/src/MonoAnalyzerPhoton/src/MonoAnalyzerPhoton.cc(\"$year\",\"$mass\",0 ,0)"
+   done
+done
+    
