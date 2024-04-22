@@ -416,7 +416,7 @@ void MonoCuts::FillNoCutHistogram(int n,vector<MonoCandidate> Cand, bool matchin
 			for(int i=0; i < Matched.size() ;i++){
          		    //cout << i << endl;
 			    x.GetProfile(PileUp_f51)->Fill(Matched[i].NPV_,Matched[i].f51_);
-			    x.GetProfile(PileUp_DedXSig)->Fill(Matched[i].NPV_,Matched[i].f51_);
+			    x.GetProfile(PileUp_DedXSig)->Fill(Matched[i].NPV_,Matched[i].dEdXSig_);
 			    if(TMath::Abs(Matched[i].eta_) < 1.479)	  x.GetProfile(EcalBarrel)->Fill(Matched[i].f51_,Matched[i].dEdXSig_);
 			    if(TMath::Abs(Matched[i].eta_) > 1.479 && TMath::Abs(Matched[i].eta_) < 3.0) 	  x.GetProfile(EcalEndCup)->Fill(Matched[i].f51_,Matched[i].dEdXSig_);
 			    if(TMath::Abs(Matched[i].eta_) < 3.0 ) x.GetProfile(EcalAll)->Fill(Matched[i].f51_,Matched[i].dEdXSig_);
@@ -440,7 +440,7 @@ void MonoCuts::FillNoCutHistogram(int n,vector<MonoCandidate> Cand, bool matchin
 			z.GetPlot(HcalIso)->Fill(Cand[i].hIso_);
 			z.GetPlot(ABCD)->Fill(Cand[i].f51_,Cand[i].dEdXSig_);
 		 	x.GetProfile(PileUp_f51)->Fill(Cand[i].NPV_,Cand[i].f51_);
-			x.GetProfile(PileUp_DedXSig)->Fill(Cand[i].NPV_,Cand[i].f51_);
+			x.GetProfile(PileUp_DedXSig)->Fill(Cand[i].NPV_,Matched[i].dEdXSig_);
 			if(TMath::Abs(Cand[i].eta_) < 1.479)	  x.GetProfile(EcalBarrel)->Fill(Cand[i].f51_,Cand[i].dEdXSig_);
 			if(TMath::Abs(Cand[i].eta_) > 1.479 && TMath::Abs(Cand[i].eta_) < 3.0) 	  x.GetProfile(EcalEndCup)->Fill(Cand[i].f51_,Cand[i].dEdXSig_);
 			if(TMath::Abs(Cand[i].eta_) < 3.0 ) x.GetProfile(EcalAll)->Fill(Cand[i].f51_,Cand[i].dEdXSig_);
