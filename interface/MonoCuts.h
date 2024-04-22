@@ -26,17 +26,19 @@ public:
         x.CreatPlot(E55,new TH1F("E55","",100,0.0,1500));
         //x.CreatPlot(F51,new TH1F("F51","",100,0.2,1.1));
         x.CreatPlot(F51,new TH1F("F51","",100,0.0,1.1));
+        x.CreatPlot(eta,new TH1F("eta","",100,-5.0,5.0));
+        x.CreatPlot(phi,new TH1F("phi","",100,-5.0,5.0));
         x.CreatPlot(HcalIso,new TH1F("HcalIso","",100,0,30));
         x.CreatPlot(ABCD,new TH2D("ABCD","",100,0,1.1,100,0,30));
 
-//        NoCutProfile.resize(1U);
-//        PlotSet &p = NoCutProfile[0];
-//        p.CreatProfile(EcalBarrel,new TProfile("EcalBarrel","",30,0,1.1,0,30));
-//        p.CreatProfile(EcalEndCup,new TProfile("EcalEndCup","",30,0,1.1,0,30));
-//        p.CreatProfile(EcalAll ,new TProfile("EcalAll","",30,0,1.1,0,30));
-//        p.CreatProfile(PileUp_DedXSig ,new TProfile("PileUp_DedXSig","",6,0,60,-1,30));
-//        p.CreatProfile(PileUp_f51 ,new TProfile("PileUp_f51","",6,0,60,-0.1,1));
-//
+        NoCutProfile.resize(1U);
+        PlotSet &p = NoCutProfile[0];
+        p.CreatProfile(EcalBarrel,new TProfile("EcalBarrel","",30,0,1.1,0,30));
+        p.CreatProfile(EcalEndCup,new TProfile("EcalEndCup","",30,0,1.1,0,30));
+        p.CreatProfile(EcalAll ,new TProfile("EcalAll","",30,0,1.1,0,30));
+        p.CreatProfile(PileUp_DedXSig ,new TProfile("PileUp_DedXSig","",6,0,60,-1,30));
+        p.CreatProfile(PileUp_f51 ,new TProfile("PileUp_f51","",6,0,60,-0.1,1));
+
  	cutName_[0] = "Quality_";
  	cutName_[1] = "Energy_";
 	cutName_[2] = "F51_";
@@ -63,6 +65,8 @@ public:
            //z.CreatPlot(E55,new TH1F((cutn1name+"E55").c_str(),"",100,-1,1200));
            z.CreatPlot(E55,new TH1F((cutn1name+"E55").c_str(),"",100,0.0,1500));
            //z.CreatPlot(F51,new TH1F((cutn1name+"F51").c_str(),"",100,0.2,1.1));
+           z.CreatPlot(eta,new TH1F((cutn1name+"eta").c_str(),"",100,-5.0,5.0));
+           z.CreatPlot(phi,new TH1F((cutn1name+"phi").c_str(),"",100,-5.0,5.0));
            z.CreatPlot(F51,new TH1F((cutn1name+"F51").c_str(),"",100,0.0,1.1));
            z.CreatPlot(HcalIso,new TH1F((cutn1name+"HcalIso").c_str(),"",100,0,30));
            z.CreatPlot(ABCD,new TH2D((cutn1name+"ABCD").c_str(),"",100,0,1.1,100,0,30));
@@ -86,6 +90,8 @@ public:
            y.CreatPlot(RZcurv,new TH1F((cutflowName+"RZcurv").c_str(),"",100,-0.01,0.01));
            //y.CreatPlot(E55,new TH1F((cutflowName+"E55").c_str(),"",100,-1,1200));
            y.CreatPlot(E55,new TH1F((cutflowName+"E55").c_str(),"",100,0.0,1500));
+           y.CreatPlot(eta,new TH1F((cutflowName+"eta").c_str(),"",100,-5.0,5.0));
+           y.CreatPlot(phi,new TH1F((cutflowName+"phi").c_str(),"",100,-5.0,5.0));
            //y.CreatPlot(F51,new TH1F((cutflowName+"F51").c_str(),"",100,0.2,1.1));
            y.CreatPlot(F51,new TH1F((cutflowName+"F51").c_str(),"",100,0.0,1.1));
            y.CreatPlot(HcalIso,new TH1F((cutflowName+"HcalIso").c_str(),"",100,0,30));
@@ -104,6 +110,7 @@ public:
 
   void doAnalysis(vector<MonoCandidate> &cand, vector<Photon> & pho, unsigned nCandidates,unsigned nPhoton, bool TRG, unsigned ev,bool matching_option,string year);
   void doAnalysis_twotriggers(vector<MonoCandidate> &cand, vector<Photon> & pho, unsigned nCandidates,unsigned nPhoton, bool TRG1, bool TRG2, unsigned ev,bool matching_option,string year);
+  void doAnalysis_altertriggers(vector<MonoCandidate> &cand, vector<Photon> & pho, unsigned nCandidates,unsigned nPhoton, bool TRG1, bool TRG2, unsigned ev,bool matching_option,string year);
   void doAnalysis_data(vector<MonoCandidate> &cand,unsigned nParticle,bool passHLT_Photon200,unsigned ev);
   void FillNoCutHistogram(int n,vector<MonoCandidate> Cand,bool matching);
   void FillFlowHistogram(int n, vector<MonoCandidate> CutFlowCand,bool matching);
@@ -295,7 +302,7 @@ private:
   int dEdXOnly_count=0;
   int QualdEdX_count=0;
 
-  // for trigger study
+  // for trigÏr study
   int photonLike=0;
 
 };
