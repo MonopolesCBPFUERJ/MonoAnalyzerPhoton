@@ -39,11 +39,12 @@ public:
         p.CreatProfile(PileUp_DedXSig ,new TProfile("PileUp_DedXSig","",6,0,60,-1,30));
         p.CreatProfile(PileUp_f51 ,new TProfile("PileUp_f51","",6,0,60,-0.1,1));
 
- 	cutName_[0] = "Quality_";
- 	cutName_[1] = "Energy_";
-	cutName_[2] = "F51_";
-	cutName_[3] = "dEdXSig_";
-	cutName_[4] = "HLT_";
+        cutName_[0] = "MET_";
+ 	cutName_[1] = "Quality_";
+ 	cutName_[2] = "Energy_";
+	cutName_[3] = "F51_";
+	cutName_[4] = "dEdXSig_";
+	cutName_[5] = "HLT_";
 	
         n_1Plot.resize(nCut);
 
@@ -108,9 +109,11 @@ public:
   }
   ~MonoCuts(){}
 
-  void doAnalysis(vector<MonoCandidate> &cand, vector<Photon> & pho, unsigned nCandidates,unsigned nPhoton, bool TRG, unsigned ev,bool matching_option,string year);
-  void doAnalysis_twotriggers(vector<MonoCandidate> &cand, vector<Photon> & pho, unsigned nCandidates,unsigned nPhoton, bool TRG1, bool TRG2, unsigned ev,bool matching_option,string year);
-  void doAnalysis_altertriggers(vector<MonoCandidate> &cand, vector<Photon> & pho, unsigned nCandidates,unsigned nPhoton, bool TRG1, bool TRG2, unsigned ev,bool matching_option,string year);
+  //void doAnalysis(vector<MonoCandidate> &cand, vector<Photon> & pho, unsigned nCandidates,unsigned nPhoton, bool TRG, unsigned ev,bool matching_option,string year);
+  void doAnalysis(vector<MonoCandidate> &cand, vector<Photon> & pho, unsigned nCandidates,unsigned nPhoton, bool TRG, unsigned ev,bool matching_option,string year, double PFMET_pt);
+  void doAnalysis_ANDtriggers(vector<MonoCandidate> &cand, vector<Photon> & pho, unsigned nCandidates,unsigned nPhoton, bool TRG1, bool TRG2, unsigned ev,bool matching_option,string year, double PFMET_pt);
+  void doAnalysis_ORtriggers(vector<MonoCandidate> &cand, vector<Photon> & pho, unsigned nCandidates,unsigned nPhoton, bool TRG1, bool TRG2, unsigned ev,bool matching_option,string year, double PFMET_pt);
+  void doAnalysis_altertriggers(vector<MonoCandidate> &cand, vector<Photon> & pho, unsigned nCandidates,unsigned nPhoton, bool TRG1, bool TRG2, unsigned ev,bool matching_option,string year, double PFMET_pt);
   void doAnalysis_data(vector<MonoCandidate> &cand,unsigned nParticle,bool passHLT_Photon200,unsigned ev);
   void FillNoCutHistogram(int n,vector<MonoCandidate> Cand,bool matching);
   void FillFlowHistogram(int n, vector<MonoCandidate> CutFlowCand,bool matching);
@@ -216,6 +219,9 @@ public:
   static const double photonCut_ ;
   static const double dEdXSig_looseCut_ ;
   static const double f51_looseCut_ ;
+  static const double PFMET_pt_Cut_ ;
+  static const double PFMET_pt_Cut2016_ ;
+  
    // if you want to set parameter in the class, you should add constexpr
   //  ex. constexpr static const double x=1;
 
@@ -233,7 +239,8 @@ private:
   //cutflow plot box
   vector<PlotSet> CutFlow;
   vector<PlotSet> Profile;
-  static const unsigned nCut = 5U;
+  //static const unsigned nCut = 5U;
+  static const unsigned nCut = 6U;
   string cutName_[nCut];
   
 
@@ -254,8 +261,11 @@ private:
 			&& mc.e55_ > e55Cut_ && mc.dEdXSig_ > dEdXSigCut_;  }
   bool evalF51loose(MonoCandidate &mc) { return mc.f51_ > f51_looseCut_ ; }
   bool evaldEdXloose(MonoCandidate &mc) { return mc.dEdXSig_ > dEdXSig_looseCut_ ;}
+  bool evalMET(MonoCandidate &mc) {return mc.PFMET_pt_ > PFMET_pt_Cut_ ;}
+  bool evalMET_2016(MonoCandidate &mc) {return mc.PFMET_pt_ > PFMET_pt_Cut2016_ ;}
 
   vector<MonoCandidate> CutFlowCand_TRG;
+  vector<MonoCandidate> CutFlowCand_MET;
   vector<MonoCandidate> CutFlowCand_Qual;
   vector<MonoCandidate> CutFlowCand_Energy;
   vector<MonoCandidate> CutFlowCand_F51;
@@ -286,6 +296,7 @@ private:
   //count for cutflow 
   int count=0;
   int Qual_count=0;
+  int MET_count=0;
   int E_count=0;
   int f51_count=0;
   int dEdX_count=0; 
