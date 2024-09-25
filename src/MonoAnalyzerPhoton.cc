@@ -32,7 +32,7 @@
 using namespace std;
 
 
-void MonoCuts::doAnalysis_twotriggers(vector<MonoCandidate> &cand, vector<Photon> & pho, unsigned nCandidates,unsigned nPhoton, bool TRG1, bool TRG2, unsigned ev,bool matching_option,string year)
+void MonoCuts::doAnalysis_ORtriggers(vector<MonoCandidate> &cand, vector<Photon> & pho, unsigned nCandidates,unsigned nPhoton, bool TRG1, bool TRG2, unsigned ev,bool matching_option,string year, double PFMET_pt)
 {
 	Clear();
   
@@ -45,6 +45,10 @@ void MonoCuts::doAnalysis_twotriggers(vector<MonoCandidate> &cand, vector<Photon
 		bool ECut16 = evalE_16(cands);
 		bool F51Cut = evalF51(cands);
 		bool dEdXCut = evaldEdX(cands);
+		bool METCut = evalMET(cands);
+		bool METCut2016 = evalMET_2016(cands);
+
+    
 
 		//N-1 cut and relative efficiency
 		if( ECut && F51Cut && dEdXCut && (TRG1 || TRG2)) N1CutCand_Qual.push_back(cands); 
@@ -61,15 +65,16 @@ void MonoCuts::doAnalysis_twotriggers(vector<MonoCandidate> &cand, vector<Photon
 		//count for total events without TRG
 		if(TRG1 || TRG2) CutFlowCand_TRG.push_back(cands);
         	//if (TRG1 && !TRG2) CutFlowCand_TRG.push_back(cands);
-		if((TRG1 || TRG2) && QualCut) CutFlowCand_Qual.push_back(cands); 
+		if((TRG1 || TRG2) && METCut) CutFlowCand_MET.push_back(cands);
+		if((TRG1 || TRG2) && METCut && QualCut) CutFlowCand_Qual.push_back(cands); 
 		if(year == "2016" || year == "2016APV"){
-			if((TRG1 || TRG2) && QualCut && ECut16 ) CutFlowCand_Energy.push_back(cands);
+			if((TRG1 || TRG2) && METCut && QualCut && ECut16 ) CutFlowCand_Energy.push_back(cands);
 		}
 		else{ 
-			if((TRG1 || TRG2) && QualCut && ECut ) CutFlowCand_Energy.push_back(cands);
+			if((TRG1 || TRG2) && METCut && QualCut && ECut ) CutFlowCand_Energy.push_back(cands);
 		}
-		if ((TRG1 || TRG2) && QualCut && ECut && F51Cut) CutFlowCand_F51.push_back(cands);
-		if ((TRG1 || TRG2) && QualCut && ECut && F51Cut && dEdXCut) CutFlowCand_Dedx.push_back(cands);
+		if ((TRG1 || TRG2) && METCut && QualCut && ECut && F51Cut) CutFlowCand_F51.push_back(cands);
+		if ((TRG1 || TRG2) && METCut && QualCut && ECut && F51Cut && dEdXCut) CutFlowCand_Dedx.push_back(cands);
 
 	} // for cand loop
 
@@ -79,32 +84,40 @@ void MonoCuts::doAnalysis_twotriggers(vector<MonoCandidate> &cand, vector<Photon
 		count++;
 		FillNoCutHistogram(0,CutFlowCand_TRG,matching_option);
 	}
+	
+	sort(CutFlowCand_MET.begin(),CutFlowCand_MET.begin()+CutFlowCand_MET.size());
+	if(CutFlowCand_MET.size()>0) 
+	{
+		MET_count++;	
+		FillFlowHistogram(0,CutFlowCand_MET,matching_option);
+	}
+
 	sort(CutFlowCand_Qual.begin(),CutFlowCand_Qual.begin()+CutFlowCand_Qual.size());
 	if(CutFlowCand_Qual.size()>0) 
 	{
 		Qual_count++;	
-		FillFlowHistogram(0,CutFlowCand_Qual,matching_option);
+		FillFlowHistogram(1,CutFlowCand_Qual,matching_option);
 	}
 
 	sort(CutFlowCand_Energy.begin(),CutFlowCand_Energy.begin()+CutFlowCand_Energy.size());
 	if(CutFlowCand_Energy.size()>0)
 	{
 		E_count++;	
-		FillFlowHistogram(1,CutFlowCand_Energy,matching_option);
+		FillFlowHistogram(2,CutFlowCand_Energy,matching_option);
 	}
 
 	sort(CutFlowCand_F51.begin(), CutFlowCand_F51.begin()+CutFlowCand_F51.size());
 	if(CutFlowCand_F51.size()>0)
 	{
 		f51_count++;
-		FillFlowHistogram(2,CutFlowCand_F51,matching_option);
+		FillFlowHistogram(3,CutFlowCand_F51,matching_option);
 	}
 
 	sort(CutFlowCand_Dedx.begin(), CutFlowCand_Dedx.begin()+CutFlowCand_Dedx.size());
 	if(CutFlowCand_Dedx.size()>0)
 	{
 		dEdX_count++;
-		FillFlowHistogram(3,CutFlowCand_Dedx,matching_option);
+		FillFlowHistogram(4,CutFlowCand_Dedx,matching_option);
 	}
 
 
@@ -148,7 +161,8 @@ void MonoCuts::doAnalysis_twotriggers(vector<MonoCandidate> &cand, vector<Photon
 
 }
 
-void MonoCuts::doAnalysis_altertriggers(vector<MonoCandidate> &cand, vector<Photon> & pho, unsigned nCandidates,unsigned nPhoton, bool TRG1, bool TRG2, unsigned ev,bool matching_option,string year)
+
+void MonoCuts::doAnalysis_ANDtriggers(vector<MonoCandidate> &cand, vector<Photon> & pho, unsigned nCandidates,unsigned nPhoton, bool TRG1, bool TRG2, unsigned ev,bool matching_option,string year, double PFMET_pt)
 {
 	Clear();
   
@@ -161,6 +175,8 @@ void MonoCuts::doAnalysis_altertriggers(vector<MonoCandidate> &cand, vector<Phot
 		bool ECut16 = evalE_16(cands);
 		bool F51Cut = evalF51(cands);
 		bool dEdXCut = evaldEdX(cands);
+		bool METCut = evalMET(cands);
+
 
 		//N-1 cut and relative efficiency
 		if( ECut && F51Cut && dEdXCut && (TRG1 && TRG2)) N1CutCand_Qual.push_back(cands); 
@@ -175,16 +191,18 @@ void MonoCuts::doAnalysis_altertriggers(vector<MonoCandidate> &cand, vector<Phot
 		//-----------------------------------------------------------------
 
 		//count for total events without TRG
- 	        if (TRG1 && !TRG2) CutFlowCand_TRG.push_back(cands);
-		if((TRG1 && !TRG2) && QualCut) CutFlowCand_Qual.push_back(cands); 
+		if(TRG1 && TRG2) CutFlowCand_TRG.push_back(cands);
+		if((TRG1 && TRG2) && METCut) CutFlowCand_MET.push_back(cands);
+        	//if (TRG1 && !TRG2) CutFlowCand_TRG.push_back(cands);
+		if((TRG1 && TRG2) && METCut && QualCut) CutFlowCand_Qual.push_back(cands); 
 		if(year == "2016" || year == "2016APV"){
-			if((TRG1 && !TRG2) && QualCut && ECut16 ) CutFlowCand_Energy.push_back(cands);
+			if((TRG1 && TRG2) && METCut && QualCut && ECut16 ) CutFlowCand_Energy.push_back(cands);
 		}
 		else{ 
-			if((TRG1 && !TRG2) && QualCut && ECut ) CutFlowCand_Energy.push_back(cands);
+			if((TRG1 && TRG2) && METCut && QualCut && ECut ) CutFlowCand_Energy.push_back(cands);
 		}
-		if ((TRG1 && !TRG2) && QualCut && ECut && F51Cut) CutFlowCand_F51.push_back(cands);
-		if ((TRG1 && !TRG2) && QualCut && ECut && F51Cut && dEdXCut) CutFlowCand_Dedx.push_back(cands);
+		if ((TRG1 && TRG2) && METCut && QualCut && ECut && F51Cut) CutFlowCand_F51.push_back(cands);
+		if ((TRG1 && TRG2) && METCut && QualCut && ECut && F51Cut && dEdXCut) CutFlowCand_Dedx.push_back(cands);
 
 	} // for cand loop
 
@@ -194,32 +212,40 @@ void MonoCuts::doAnalysis_altertriggers(vector<MonoCandidate> &cand, vector<Phot
 		count++;
 		FillNoCutHistogram(0,CutFlowCand_TRG,matching_option);
 	}
+
+	sort(CutFlowCand_MET.begin(),CutFlowCand_MET.begin()+CutFlowCand_MET.size());
+	if(CutFlowCand_MET.size()>0) 
+	{
+		MET_count++;	
+		FillFlowHistogram(0,CutFlowCand_MET,matching_option);
+	}
+
 	sort(CutFlowCand_Qual.begin(),CutFlowCand_Qual.begin()+CutFlowCand_Qual.size());
 	if(CutFlowCand_Qual.size()>0) 
 	{
 		Qual_count++;	
-		FillFlowHistogram(0,CutFlowCand_Qual,matching_option);
+		FillFlowHistogram(1,CutFlowCand_Qual,matching_option);
 	}
 
 	sort(CutFlowCand_Energy.begin(),CutFlowCand_Energy.begin()+CutFlowCand_Energy.size());
 	if(CutFlowCand_Energy.size()>0)
 	{
 		E_count++;	
-		FillFlowHistogram(1,CutFlowCand_Energy,matching_option);
+		FillFlowHistogram(2,CutFlowCand_Energy,matching_option);
 	}
 
 	sort(CutFlowCand_F51.begin(), CutFlowCand_F51.begin()+CutFlowCand_F51.size());
 	if(CutFlowCand_F51.size()>0)
 	{
 		f51_count++;
-		FillFlowHistogram(2,CutFlowCand_F51,matching_option);
+		FillFlowHistogram(3,CutFlowCand_F51,matching_option);
 	}
 
 	sort(CutFlowCand_Dedx.begin(), CutFlowCand_Dedx.begin()+CutFlowCand_Dedx.size());
 	if(CutFlowCand_Dedx.size()>0)
 	{
 		dEdX_count++;
-		FillFlowHistogram(3,CutFlowCand_Dedx,matching_option);
+		FillFlowHistogram(4,CutFlowCand_Dedx,matching_option);
 	}
 
 
@@ -264,10 +290,138 @@ void MonoCuts::doAnalysis_altertriggers(vector<MonoCandidate> &cand, vector<Phot
 }
 
 
-void MonoCuts::doAnalysis(vector<MonoCandidate> &cand, vector<Photon> & pho, unsigned nCandidates,unsigned nPhoton, bool TRG, unsigned ev,bool matching_option,string year)
+void MonoCuts::doAnalysis_altertriggers(vector<MonoCandidate> &cand, vector<Photon> & pho, unsigned nCandidates,unsigned nPhoton, bool TRG1, bool TRG2, unsigned ev,bool matching_option,string year, double PFMET_pt)
+{
+	Clear();
+  
+	for(unsigned c=0;c<nCandidates;c++){
+
+
+		MonoCandidate &cands = cand[c];
+		bool QualCut = evalQuality(cands);
+		bool ECut = evalE(cands);
+		bool ECut16 = evalE_16(cands);
+		bool F51Cut = evalF51(cands);
+		bool dEdXCut = evaldEdX(cands);
+		bool METCut = evalMET(cands);
+		bool METCut2016 = evalMET_2016(cands);
+
+		//N-1 cut and relative efficiency
+		if( ECut && F51Cut && dEdXCut && (TRG1 && !TRG2)) N1CutCand_Qual.push_back(cands); 
+		if( QualCut && F51Cut && dEdXCut && (TRG1 && !TRG2)) N1CutCand_Energy.push_back(cands);
+		if( QualCut && ECut && dEdXCut && (TRG1 && !TRG2)) N1CutCand_F51.push_back(cands);
+		if( QualCut && ECut && F51Cut && (TRG1 && !TRG2))  N1CutCand_Dedx.push_back(cands);
+		if( QualCut && ECut & F51Cut && dEdXCut) N1CutCand_TRG.push_back(cands);
+
+
+		//-----------------------------------------------------------------	
+		//---Cutflow histograms--------------------------------------------
+		//-----------------------------------------------------------------
+
+		//count for total events without TRG
+ 	        if (TRG1 && !TRG2) CutFlowCand_TRG.push_back(cands);
+		if ((TRG1 && !TRG2) && METCut) CutFlowCand_MET.push_back(cands);
+		if((TRG1 && !TRG2) && METCut && QualCut) CutFlowCand_Qual.push_back(cands); 
+		if(year == "2016" || year == "2016APV"){
+			if((TRG1 && !TRG2) && METCut && QualCut && ECut16 ) CutFlowCand_Energy.push_back(cands);
+		}
+		else{ 
+			if((TRG1 && !TRG2) && METCut && QualCut && ECut ) CutFlowCand_Energy.push_back(cands);
+		}
+		if ((TRG1 && !TRG2) && METCut && QualCut && ECut && F51Cut) CutFlowCand_F51.push_back(cands);
+		if ((TRG1 && !TRG2) && METCut && QualCut && ECut && F51Cut && dEdXCut) CutFlowCand_Dedx.push_back(cands);
+
+	} // for cand loop
+
+	sort(CutFlowCand_TRG.begin(),CutFlowCand_TRG.begin()+CutFlowCand_TRG.size());
+	if(CutFlowCand_TRG.size()>0) 
+	{
+		count++;
+		FillNoCutHistogram(0,CutFlowCand_TRG,matching_option);
+	}
+
+	sort(CutFlowCand_MET.begin(),CutFlowCand_MET.begin()+CutFlowCand_MET.size());
+	if(CutFlowCand_MET.size()>0) 
+	{
+		MET_count++;	
+		FillFlowHistogram(0,CutFlowCand_MET,matching_option);
+	}
+
+	sort(CutFlowCand_Qual.begin(),CutFlowCand_Qual.begin()+CutFlowCand_Qual.size());
+	if(CutFlowCand_Qual.size()>0) 
+	{
+		Qual_count++;	
+		FillFlowHistogram(1,CutFlowCand_Qual,matching_option);
+	}
+
+	sort(CutFlowCand_Energy.begin(),CutFlowCand_Energy.begin()+CutFlowCand_Energy.size());
+	if(CutFlowCand_Energy.size()>0)
+	{
+		E_count++;	
+		FillFlowHistogram(2,CutFlowCand_Energy,matching_option);
+	}
+
+	sort(CutFlowCand_F51.begin(), CutFlowCand_F51.begin()+CutFlowCand_F51.size());
+	if(CutFlowCand_F51.size()>0)
+	{
+		f51_count++;
+		FillFlowHistogram(3,CutFlowCand_F51,matching_option);
+	}
+
+	sort(CutFlowCand_Dedx.begin(), CutFlowCand_Dedx.begin()+CutFlowCand_Dedx.size());
+	if(CutFlowCand_Dedx.size()>0)
+	{
+		dEdX_count++;
+		FillFlowHistogram(4,CutFlowCand_Dedx,matching_option);
+	}
+
+
+	///////////////////////////////////////////////////
+	/////////  N1 Cut Plots and  Count   //////////////
+	///////////////////////////////////////////////////
+
+
+	//count n_1Plot TRG+Qual and get plots
+	sort(N1CutCand_Qual.begin(),N1CutCand_Qual.begin()+N1CutCand_Qual.size());
+	if(N1CutCand_Qual.size()>0) 
+	{
+		FillN1Histogram(0,N1CutCand_Qual);
+		NoQual++;
+	}
+	sort(N1CutCand_Energy.begin(),N1CutCand_Energy.begin()+N1CutCand_Energy.size());
+	if(N1CutCand_Energy.size()>0)
+	{
+		FillN1Histogram(1,N1CutCand_Energy);
+		NoE++;	
+	}
+	sort(N1CutCand_F51.begin(),N1CutCand_F51.begin()+N1CutCand_F51.size());
+	if(N1CutCand_F51.size()>0)
+	{
+		FillN1Histogram(2,N1CutCand_F51);
+		NoF51++;	
+	}
+	sort(N1CutCand_Dedx.begin(),N1CutCand_Dedx.begin()+N1CutCand_Dedx.size());
+	if(N1CutCand_Dedx.size()>0)
+	{
+
+		FillN1Histogram(3,N1CutCand_Dedx);
+		NodEdXCut++;	
+	}
+	sort(N1CutCand_TRG.begin(),N1CutCand_TRG.begin()+N1CutCand_TRG.size());
+	if(N1CutCand_TRG.size()>0) 
+	{
+		FillN1Histogram(4,N1CutCand_TRG);
+		NoTRG++;
+	}
+
+}
+
+
+void MonoCuts::doAnalysis(vector<MonoCandidate> &cand, vector<Photon> & pho, unsigned nCandidates,unsigned nPhoton, bool TRG, unsigned ev,bool matching_option,string year, double PFMET_pt)
 {
 	Clear();
         //cout << "nCandidates:" << nCandidates << endl; 
+
 
 	for(unsigned c=0;c<nCandidates;c++){
 
@@ -278,6 +432,8 @@ void MonoCuts::doAnalysis(vector<MonoCandidate> &cand, vector<Photon> & pho, uns
 		bool ECut16 = evalE_16(cands);
 		bool F51Cut = evalF51(cands);
 		bool dEdXCut = evaldEdX(cands);
+		bool METCut = evalMET(cands);   // Applying PFMET_pt > 500 GeV condition
+		
 
 
 		//N-1 cut and relative efficiency
@@ -285,6 +441,7 @@ void MonoCuts::doAnalysis(vector<MonoCandidate> &cand, vector<Photon> & pho, uns
 		if( QualCut && F51Cut && dEdXCut && TRG ) N1CutCand_Energy.push_back(cands);
 		if( QualCut && ECut && dEdXCut && TRG ) N1CutCand_F51.push_back(cands);
 		if( QualCut && ECut && F51Cut && TRG )  N1CutCand_Dedx.push_back(cands);
+		if( QualCut && ECut & F51Cut && dEdXCut) N1CutCand_TRG.push_back(cands);
 
 		//-----------------------------------------------------------------	
 		//---Cutflow histograms--------------------------------------------
@@ -294,12 +451,13 @@ void MonoCuts::doAnalysis(vector<MonoCandidate> &cand, vector<Photon> & pho, uns
 
 		//count for total events without TRG	
 		if(TRG) CutFlowCand_TRG.push_back(cands);
-		if(TRG && QualCut) CutFlowCand_Qual.push_back(cands); 
+                if(TRG && METCut) CutFlowCand_MET.push_back(cands);
+		if(TRG && METCut && QualCut) CutFlowCand_Qual.push_back(cands); 
 		if(year == "2016" || year == "2016APV"){
-			if(TRG && QualCut && ECut16 ) CutFlowCand_Energy.push_back(cands);
+			if(TRG && METCut && QualCut && ECut16 ) CutFlowCand_Energy.push_back(cands);
 		}
 		else{ 
-			if(TRG && QualCut && ECut) CutFlowCand_Energy.push_back(cands);
+			if(TRG && METCut && QualCut && ECut) CutFlowCand_Energy.push_back(cands);
 		}
 		// New additions 
 		//if (TRG && QualCut && ECut && F51Cut) CutFlowCand_F51.push_back(cands);
@@ -313,11 +471,19 @@ void MonoCuts::doAnalysis(vector<MonoCandidate> &cand, vector<Photon> & pho, uns
 		count++;
 		FillNoCutHistogram(0,CutFlowCand_TRG,matching_option);
 	}
+
+	sort(CutFlowCand_MET.begin(),CutFlowCand_MET.begin()+CutFlowCand_MET.size());
+	if(CutFlowCand_MET.size()>0) 
+	{
+		MET_count++;	
+		FillFlowHistogram(0,CutFlowCand_MET,matching_option);
+	}
+
 	sort(CutFlowCand_Qual.begin(),CutFlowCand_Qual.begin()+CutFlowCand_Qual.size());
 	if(CutFlowCand_Qual.size()>0) 
 	{
 		Qual_count++;	
-		FillFlowHistogram(0,CutFlowCand_Qual,matching_option);
+		FillFlowHistogram(1,CutFlowCand_Qual,matching_option);
 	}
 
 
@@ -325,7 +491,7 @@ void MonoCuts::doAnalysis(vector<MonoCandidate> &cand, vector<Photon> & pho, uns
 	if(CutFlowCand_Energy.size()>0)
 	{
 		E_count++;	
-		FillFlowHistogram(1,CutFlowCand_Energy,matching_option);
+		FillFlowHistogram(2,CutFlowCand_Energy,matching_option);
 
 		MonoCandidate &Cand = CutFlowCand_Energy[0];
 		bool F51Cut = evalF51(Cand);
@@ -335,7 +501,7 @@ void MonoCuts::doAnalysis(vector<MonoCandidate> &cand, vector<Photon> & pho, uns
 	if(CutFlowCand_F51.size()>0)
 	{
 		f51_count++;	
-		FillFlowHistogram(2,CutFlowCand_F51,matching_option);
+		FillFlowHistogram(3,CutFlowCand_F51,matching_option);
 
 		MonoCandidate &SelectedCand = CutFlowCand_F51[0];
 		bool dEdXCut = evaldEdX(SelectedCand);
@@ -346,7 +512,7 @@ void MonoCuts::doAnalysis(vector<MonoCandidate> &cand, vector<Photon> & pho, uns
 	if(CutFlowCand_Dedx.size()>0)
 	{
 		dEdX_count++;	
-		FillFlowHistogram(3,CutFlowCand_Dedx,matching_option);
+		FillFlowHistogram(4,CutFlowCand_Dedx,matching_option);
 	}
 
 
@@ -547,7 +713,8 @@ vector<MonoCandidate> MonoCuts::Matching(vector<MonoCandidate> Cand){
 }
 void MonoCuts::Clear(){
 
-	CutFlowCand_TRG.clear();	
+	CutFlowCand_TRG.clear();
+	CutFlowCand_MET.clear();	
 	CutFlowCand_Qual.clear();
 	CutFlowCand_Energy.clear();
 	CutFlowCand_F51.clear();
@@ -580,6 +747,7 @@ void MonoCuts::SignalEff(const string trName, double TotalEvents)
 	//signal efficiency = no. of events after all selection cuts/all events
 	cout<<trName<<" ================================="<<endl;
 	cout<<"        TRG "<<count<<endl;
+	cout<<"        METCut "<<MET_count<<endl;
 	cout<<"QualityCuts "<<Qual_count<<endl;
 	cout<<"       ECut "<<E_count<<endl;
 	cout<<"     F51Cut "<<f51_count<<endl;
@@ -617,12 +785,15 @@ const double MonoCuts::rzp2Cut_=0.005;
 const double MonoCuts::distCut_ = 0.5;
 const double MonoCuts::hIsoCut_= 10;
 const double MonoCuts::dEdXSigCut_ = 9.0;
-const double MonoCuts::e55Cut_ = 200;
-const double MonoCuts::e55Cut2016_ = 175;
+const double MonoCuts::e55Cut_ = 0.0;
+const double MonoCuts::e55Cut2016_ = 0.0;
 const double MonoCuts::f51Cut_ = 0.85;
 const double MonoCuts::photonCut_ = 200;
 const double MonoCuts::dEdXSig_looseCut_ = 7;
-const double MonoCuts::f51_looseCut_= 0.75 ;
+const double MonoCuts::f51_looseCut_= 0.75;
+const double MonoCuts::PFMET_pt_Cut_= 500.0;
+const double MonoCuts::PFMET_pt_Cut2016_= 500.0;
+
 
 void MonoAnalyzerPhoton(string year, string mass,bool matching_option, int sys_option=0)
 {
@@ -646,10 +817,6 @@ void MonoAnalyzerPhoton(string year, string mass,bool matching_option, int sys_o
 		// Drell-Yan samples
 		//tree->Add(("/eos/cms/store/user/srimanob/monopole/13TeV/Legacy-NTUPLE-v2/merges/"+year+"-"+mass+".root").c_str());   // Phat's repository
 		//cout << "/eos/cms/store/user/srimanob/monopole/13TeV/Legacy-NTUPLE-v2/merges/"+year+"-"+mass+".root" <<  endl;
-                //tree->Add(("/eos/cms/store/user/srimanob/monopole/13TeV/Legacy-NTUPLE-v2/merges/"+year+"-"+mass+"-SpinZero.root").c_str());
-                //cout << "/eos/cms/store/user/srimanob/monopole/13TeV/Legacy-NTUPLE-v2/merges/"+year+"-"+mass+"-SpinZero.root" <<  endl; 
-		//tree->Add(("/afs/cern.ch/user/t/tmenezes/work/private/Monopole_Ntuples_fromsun51027/merges/"+year+"-"+mass+".root").c_str());   // New production
-		//cout << "/afs/cern.ch/user/t/tmenezes/work/private/Monopole_Ntuples_fromsun51027/merges/"+year+"-"+mass+".root" << endl;
                 tree->Add(("/eos/user/t/tmenezes/Monopole_Ntuples/"+year+"-"+mass+".root").c_str());   // New production
                 cout << "/eos/user/t/tmenezes/Monopole_Ntuples/"+year+"-"+mass+".root" << endl;		
 
@@ -677,12 +844,6 @@ void MonoAnalyzerPhoton(string year, string mass,bool matching_option, int sys_o
 		tree->Add(("/wk_cms2/shihlin0314/CMSSW_8_0_29/src/Systematic/DedxCrossTalk/"+year+"/"+mass+"/*.root").c_str());
 	}
 
-	// 2016
-	//TFile *oFile = new TFile(("/afs/cern.ch/user/t/tmenezes/work/private/output_MonoAnalyzerPhoton/2016/v2_MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root").c_str(),"recreate");
-	//TFile *oFile = new TFile(("/afs/cern.ch/user/t/tmenezes/work/private/output_MonoAnalyzerPhoton/2016APV/v2_MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root").c_str(),"recreate");
-        // 2017
-        //TFile *oFile = new TFile(("/afs/cern.ch/user/t/tmenezes/work/private/output_MonoAnalyzerPhoton/2017/v2_MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root").c_str(),"recreate");
-	// 2018
  	TFile *oFile = new TFile(("/afs/cern.ch/user/t/tmenezes/work/private/output_MonoAnalyzerPhoton/"+year+"/v2_MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root").c_str(),"recreate");
         cout << "Created output file at:" << "/afs/cern.ch/user/t/tmenezes/work/private/output_MonoAnalyzerPhoton/"+year+"/v2_MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root" << endl;
 
@@ -706,6 +867,7 @@ void MonoAnalyzerPhoton(string year, string mass,bool matching_option, int sys_o
 	unsigned NPV;
 	double CaloMET_pt;
 	double GenMET_pt;
+	double PFMET_pt;
 	double mono_eta;
 	double mono_phi;
 	double amon_eta;
@@ -773,6 +935,7 @@ void MonoAnalyzerPhoton(string year, string mass,bool matching_option, int sys_o
 	tree->SetBranchAddress("amon_eta",&amon_eta);
 	tree->SetBranchAddress("amon_phi",&amon_phi);
 	tree->SetBranchAddress("CaloMET_pt",&CaloMET_pt);
+	tree->SetBranchAddress("mpt_pt",&PFMET_pt);
 	tree->SetBranchAddress("GenMET_pt",&GenMET_pt);
 	tree->SetBranchAddress("pho_N",&nPhoton);
 	tree->SetBranchAddress("pho_eta",&pho_eta);
@@ -796,7 +959,6 @@ void MonoAnalyzerPhoton(string year, string mass,bool matching_option, int sys_o
 	MonoCuts PFMET_TrgAnalysis("HLT_PFMET250_HBHECleaned",oFile);
 	MonoCuts CaloMET_TrgAnalysis("HLT_CaloMET350_HBHECleaned",oFile);
 	MonoCuts PFMET200_TrgAnalysis("HLT_PFMET200_HBHE_BeamHaloCleaned",oFile);
-	MonoCuts PFMET200TypeOne_TrgAnalysis("HLT_PFMETTypeOne200_HBHE_BeamHaloCleaned", oFile);
 
 	// Trigger Combinations for 2016
 	MonoCuts Pho175_notPFMET300_TrgAnalysis("HLTPhoton175_notPFMET300",oFile);
@@ -815,8 +977,16 @@ void MonoAnalyzerPhoton(string year, string mass,bool matching_option, int sys_o
 
 	// Overlap Triggers for 2017/2018
 	MonoCuts Pho200_or_PFMET250_TrgAnalysis("HLTPhoton200_or_PFMET250", oFile);
-	MonoCuts Pho200_or_PFMET200TypeOne_TrgAnalysis("HLTPhoton200_or_PFMET200TypeOne",oFile);
+	MonoCuts Pho200_or_PFMET200_TrgAnalysis("HLTPhoton200_or_PFMET200",oFile);
 
+
+	// AND Triggers for 2016
+	MonoCuts Pho175_AND_PFMET300_TrgAnalysis("HLTPhoton175_AND_PFMET300", oFile);
+        MonoCuts Pho175_AND_PFMET170_TrgAnalysis("HLTPhoton175_AND_PFMET170", oFile);
+
+	// AND Triggers for 2017/2018
+	MonoCuts Pho200_AND_PFMET250_TrgAnalysis("HLTPhoton200_AND_PFMET250", oFile);
+	MonoCuts Pho200_AND_PFMET200_TrgAnalysis("HLTPhoton200_AND_PFMET200", oFile);
 
 
 	vector<MonoCandidate> cand(10);	
@@ -856,7 +1026,8 @@ void MonoAnalyzerPhoton(string year, string mass,bool matching_option, int sys_o
 					amon_eta,
 					amon_phi,
 					event,
-					NPV	
+					NPV,
+					PFMET_pt
 						);
 		}
 		if(nPhoton!=0){
@@ -872,43 +1043,48 @@ void MonoAnalyzerPhoton(string year, string mass,bool matching_option, int sys_o
 
 
 		// No Trigger Scenario (NOTrg)
-		noTrgAnalysis.doAnalysis(cand,photon,nCandidates,nPhoton,true,ev,matching_option,year);
+		noTrgAnalysis.doAnalysis(cand,photon,nCandidates,nPhoton,true,ev,matching_option,year, PFMET_pt);
 
 
 		if( year == "2016" || year == "2016APV"){ 
 
 			// Single Triggers
-			HLT175_TrgAnalysis.doAnalysis(cand,photon,nCandidates,nPhoton,passHLT_Photon175,ev,matching_option,year);                // 2016        
-			PFMET300_TrgAnalysis.doAnalysis(cand,photon,nCandidates,nPhoton,passHLT_PFMET300,ev,matching_option,year);
-			PFMET170_TrgAnalysis.doAnalysis(cand,photon,nCandidates,nPhoton,passHLT_PFMET170_HBHE_BeamHaloCleaned,ev,matching_option,year);
+			HLT175_TrgAnalysis.doAnalysis(cand,photon,nCandidates,nPhoton,passHLT_Photon175,ev,matching_option,year,PFMET_pt);                // 2016        
+			PFMET300_TrgAnalysis.doAnalysis(cand,photon,nCandidates,nPhoton,passHLT_PFMET300,ev,matching_option,year,PFMET_pt);
+			PFMET170_TrgAnalysis.doAnalysis(cand,photon,nCandidates,nPhoton,passHLT_PFMET170_HBHE_BeamHaloCleaned,ev,matching_option,year,PFMET_pt);
 
 			// Trigger Combinations
-			notPho175_PFMET300_TrgAnalysis.doAnalysis_altertriggers(cand,photon,nCandidates,nPhoton,passHLT_PFMET170_HBHE_BeamHaloCleaned,passHLT_Photon175,ev,matching_option,year);
-			notPho175_PFMET170_TrgAnalysis.doAnalysis_altertriggers(cand,photon,nCandidates,nPhoton,passHLT_PFMET300,passHLT_Photon175,ev,matching_option,year);
-			Pho175_notPFMET300_TrgAnalysis.doAnalysis_altertriggers(cand,photon,nCandidates,nPhoton,passHLT_Photon175,passHLT_PFMET300,ev,matching_option,year);
-			Pho175_notPFMET170_TrgAnalysis.doAnalysis_altertriggers(cand,photon,nCandidates,nPhoton,passHLT_Photon175,passHLT_PFMET170_HBHE_BeamHaloCleaned,ev,matching_option,year);
+			notPho175_PFMET170_TrgAnalysis.doAnalysis_altertriggers(cand,photon,nCandidates,nPhoton,passHLT_PFMET170_HBHE_BeamHaloCleaned,passHLT_Photon175,ev,matching_option,year,PFMET_pt);
+			notPho175_PFMET300_TrgAnalysis.doAnalysis_altertriggers(cand,photon,nCandidates,nPhoton,passHLT_PFMET300,passHLT_Photon175,ev,matching_option,year,PFMET_pt);
+			Pho175_notPFMET300_TrgAnalysis.doAnalysis_altertriggers(cand,photon,nCandidates,nPhoton,passHLT_Photon175,passHLT_PFMET300,ev,matching_option,year,PFMET_pt);
+			Pho175_notPFMET170_TrgAnalysis.doAnalysis_altertriggers(cand,photon,nCandidates,nPhoton,passHLT_Photon175,passHLT_PFMET170_HBHE_BeamHaloCleaned,ev,matching_option,year,PFMET_pt);
 
 			// Overlap Photon+MET
-			Pho175_or_PFMET300_TrgAnalysis.doAnalysis_twotriggers(cand,photon,nCandidates,nPhoton,passHLT_Photon175,passHLT_PFMET300,ev,matching_option,year);
-                        Pho175_or_PFMET170_TrgAnalysis.doAnalysis_twotriggers(cand,photon,nCandidates,nPhoton,passHLT_Photon175,passHLT_PFMET170_HBHE_BeamHaloCleaned,ev,matching_option,year);
+			Pho175_or_PFMET300_TrgAnalysis.doAnalysis_ORtriggers(cand,photon,nCandidates,nPhoton,passHLT_Photon175,passHLT_PFMET300,ev,matching_option,year,PFMET_pt);
+                        Pho175_or_PFMET170_TrgAnalysis.doAnalysis_ORtriggers(cand,photon,nCandidates,nPhoton,passHLT_Photon175,passHLT_PFMET170_HBHE_BeamHaloCleaned,ev,matching_option,year,PFMET_pt);
+
+			Pho175_AND_PFMET300_TrgAnalysis.doAnalysis_ANDtriggers(cand,photon,nCandidates,nPhoton,passHLT_Photon175,passHLT_PFMET300,ev,matching_option,year,PFMET_pt);
+			Pho175_AND_PFMET170_TrgAnalysis.doAnalysis_ANDtriggers(cand,photon,nCandidates,nPhoton,passHLT_Photon175,passHLT_PFMET170_HBHE_BeamHaloCleaned,ev,matching_option,year,PFMET_pt);
+
+
 			}
 
 		else{
 			// Single Triggers
-		        HLT200_TrgAnalysis.doAnalysis(cand,photon,nCandidates,nPhoton,passHLT_Photon200,ev,matching_option,year);                       
-        	        PFMET_TrgAnalysis.doAnalysis(cand,photon,nCandidates,nPhoton,passHLT_PFMET250_HBHECleaned,ev,matching_option,year);   
-			PFMHT140_TrgAnalysis.doAnalysis(cand,photon,nCandidates,nPhoton,passHLT_PFMET140_PFMHT140_IDTight,ev,matching_option,year);
-        	        //CaloMET_TrgAnalysis.doAnalysis(cand,photon,nCandidates,nPhoton,passHLT_CaloMET350_HBHECleaned,ev,matching_option,year);
-			PFMET200_TrgAnalysis.doAnalysis(cand,photon,nCandidates,nPhoton,passHLT_PFMET200_HBHE_BeamHaloCleaned,ev,matching_option,year);
+		        HLT200_TrgAnalysis.doAnalysis(cand,photon,nCandidates,nPhoton,passHLT_Photon200,ev,matching_option,year,PFMET_pt);                       
+        	        PFMET_TrgAnalysis.doAnalysis(cand,photon,nCandidates,nPhoton,passHLT_PFMET250_HBHECleaned,ev,matching_option,year,PFMET_pt);   
+			PFMET200_TrgAnalysis.doAnalysis(cand,photon,nCandidates,nPhoton,passHLT_PFMET200_HBHE_BeamHaloCleaned,ev,matching_option,year,PFMET_pt);
 
 			// Trigger Combinations
-			Pho200_notPFMET_TrgAnalysis.doAnalysis_altertriggers(cand,photon,nCandidates,nPhoton,passHLT_Photon200,passHLT_PFMET250_HBHECleaned,ev,matching_option,year);
-			notPho200_PFMET_TrgAnalysis.doAnalysis_altertriggers(cand,photon,nCandidates,nPhoton,passHLT_PFMET250_HBHECleaned,passHLT_Photon200,ev,matching_option,year);
+			Pho200_notPFMET_TrgAnalysis.doAnalysis_altertriggers(cand,photon,nCandidates,nPhoton,passHLT_Photon200,passHLT_PFMET250_HBHECleaned,ev,matching_option,year,PFMET_pt);
+			notPho200_PFMET_TrgAnalysis.doAnalysis_altertriggers(cand,photon,nCandidates,nPhoton,passHLT_PFMET250_HBHECleaned,passHLT_Photon200,ev,matching_option,year,PFMET_pt);
 
 			// Overlap Photon+MET
-			Pho200_or_PFMET250_TrgAnalysis.doAnalysis_twotriggers(cand,photon,nCandidates,nPhoton,passHLT_Photon200,passHLT_PFMET250_HBHECleaned,ev,matching_option,year);
-			Pho200_or_PFMET200TypeOne_TrgAnalysis.doAnalysis_twotriggers(cand,photon,nCandidates,nPhoton,passHLT_Photon200,passHLT_PFMETTypeOne200_HBHE_BeamHaloCleaned,ev,matching_option,year);
-				
+			Pho200_or_PFMET250_TrgAnalysis.doAnalysis_ORtriggers(cand,photon,nCandidates,nPhoton,passHLT_Photon200,passHLT_PFMET250_HBHECleaned,ev,matching_option,year,PFMET_pt);
+			Pho200_or_PFMET200_TrgAnalysis.doAnalysis_ORtriggers(cand,photon,nCandidates,nPhoton,passHLT_Photon200,passHLT_PFMET200_HBHE_BeamHaloCleaned,ev,matching_option,year,PFMET_pt);
+			Pho200_AND_PFMET250_TrgAnalysis.doAnalysis_ANDtriggers(cand,photon,nCandidates,nPhoton,passHLT_Photon200,passHLT_PFMET250_HBHECleaned,ev,matching_option,year,PFMET_pt);
+			Pho200_AND_PFMET200_TrgAnalysis.doAnalysis_ANDtriggers(cand,photon,nCandidates,nPhoton,passHLT_Photon200,passHLT_PFMET200_HBHE_BeamHaloCleaned,ev,matching_option,year,PFMET_pt);
+
 			}
 
 
@@ -934,19 +1110,22 @@ void MonoAnalyzerPhoton(string year, string mass,bool matching_option, int sys_o
 			notPho175_PFMET170_TrgAnalysis.WritePlots(oFile);
 			notPho175_PFMET170_TrgAnalysis.SignalEff("notPhoton175_PFMET170", NEvents);
 			Pho175_or_PFMET300_TrgAnalysis.WritePlots(oFile);
+			Pho175_notPFMET300_TrgAnalysis.SignalEff("Photon175_notPFMET300", NEvents);
+			Pho175_notPFMET300_TrgAnalysis.WritePlots(oFile);
       			Pho175_or_PFMET300_TrgAnalysis.SignalEff("HLTPhoton175_or_PFMET300",NEvents);
                         Pho175_or_PFMET170_TrgAnalysis.WritePlots(oFile);
                         Pho175_or_PFMET170_TrgAnalysis.SignalEff("HLTPhoton175_or_PFMET170", NEvents);
+			Pho175_AND_PFMET300_TrgAnalysis.WritePlots(oFile);
+			Pho175_AND_PFMET300_TrgAnalysis.SignalEff("HLTPhoton175_AND_PFMET300", NEvents);
+			Pho175_AND_PFMET170_TrgAnalysis.WritePlots(oFile);
+			Pho175_AND_PFMET170_TrgAnalysis.SignalEff("HLTPhoton175_AND_PFMET170", NEvents);
 
 		}
-
 		else{
 			HLT200_TrgAnalysis.WritePlots(oFile);
 			HLT200_TrgAnalysis.SignalEff("HLT_Photon200",NEvents);
 			PFMET_TrgAnalysis.WritePlots(oFile);
 			PFMET_TrgAnalysis.SignalEff("HLT_PFMET250_HBHECleaned",NEvents);
-			PFMHT140_TrgAnalysis.WritePlots(oFile);
-			PFMHT140_TrgAnalysis.SignalEff("HLT_PFMET140_PFMHT140_IDTight", NEvents);
 			PFMET200_TrgAnalysis.WritePlots(oFile);
 			PFMET200_TrgAnalysis.SignalEff("HLT_PFMET200_HBHE_BeamHaloCleaned",NEvents);
 			Pho200_notPFMET_TrgAnalysis.WritePlots(oFile);
@@ -955,8 +1134,9 @@ void MonoAnalyzerPhoton(string year, string mass,bool matching_option, int sys_o
 			notPho200_PFMET_TrgAnalysis.SignalEff("notHLTPhoton200_PFMET250",NEvents);
 			Pho200_or_PFMET250_TrgAnalysis.WritePlots(oFile);
 			Pho200_or_PFMET250_TrgAnalysis.SignalEff("HLTPhoton200_or_PFMET250",NEvents);
-	                Pho200_or_PFMET200TypeOne_TrgAnalysis.WritePlots(oFile);
-            		Pho200_or_PFMET200TypeOne_TrgAnalysis.SignalEff("HLTPhoton200_or_PFMET200TypeOne",NEvents);
+			Pho200_AND_PFMET250_TrgAnalysis.SignalEff("HLTPhoton200_and_PFMET250", NEvents);
+			Pho200_AND_PFMET250_TrgAnalysis.WritePlots(oFile);
+	
 
 		}
 
