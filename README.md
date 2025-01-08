@@ -15,6 +15,9 @@ Structure for this repo:
 This source file only analyze the signal MC. The input file are in Phat eos space:
 
 `/eos/cms/store/group/offcomp_upgrade-sw/srimanob/monopole/13TeV/Legacy-RECO-v2/`
+and in the Thales eos space. 
+`/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/`
+
 
 **note that you must change the path of inputFile in the code [line](https://github.com/sun51027/Monopole-Analysis/blob/main/MonoAnalyzerPhoton/src/MonoAnalyzerPhoton.cc#L393)**
 
@@ -54,5 +57,29 @@ Don't care about the "warning" message.
 
 Contact Lin if you have any questions: lshih@cern.ch
 
+### Update for the two strategies and the four processes: 
+
+The code is designed to run with:
+Two Strategies: Photon and PFMET
+Four processes: SpinHalf_DY, SpinZero_DY, SpinHalf_PF, SpinZero_PF 
 
 
+The MonoAnalyzerPhoton function had a string process added to account for all the processes.
+
+`root -l -q "src/MonoAnalyzerPhoton.cc("2018","1000",\"SpinHalf_DY",1 ,0)" `
+
+For the change between the two strategies:
+
+1. Photon strategy:
+
+`const double MonoCuts::e55Cut_ = 200.0;`
+`const double MonoCuts::e55Cut2016_ = 175.0;`
+`const double MonoCuts::PFMET_pt_Cut_= 0.0;`
+`const double MonoCuts::PFMET_pt_Cut2016_= 0.0; `
+
+2. PFMET strategy:
+
+`const double MonoCuts::e55Cut_ = 0.0;`
+`const double MonoCuts::e55Cut2016_ = 0.0;`
+`const double MonoCuts::PFMET_pt_Cut_= 400.0;`
+`const double MonoCuts::PFMET_pt_Cut2016_= 500.0; `
