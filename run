@@ -6,24 +6,6 @@ processes=("SpinHalf_DrellYan")
 #masses=("2000")
 masses=("1000" "1500" "2000" "2500" "3000" "3500" "4000" "4500")
 
-#logfile="log_2018_.log"
-#echo "Execution started at $(date)" > "$logfile"
-
-#for year in "${years[@]}"
-#do
-#   for mass in "${masses[@]}"
- #  do
-#      for process in "${processes[@]}"
-#      do
-#         echo "Running for year: $year, mass: $mass, process: $process" >> "$logfile"
-#         root -l -q "/afs/cern.ch/user/t/tmenezes/work/private/MonopoleAnalysis_Framework/CMSSW_10_6_23/src/MonoAnalyzerPhoton/src/MonoAnalyzerPhoton.cc(\"$year\",\"$mass\",\"$process\",1 ,0)" >> $logfile
-         #root -l -q "/afs/cern.ch/user/t/tmenezes/work/private/CMSSW_10_6_23/src/MonoAnalyzerPhoton/src/MonoAnalyzerPhoton.cc(\"$year\",\"$mass\",\"$process\",0 ,0)" 2>&1 | tee -a "$logfile"
-#      done
-#   done
-#done
-
-#echo "Execution finished at $(date)" >> "$logfile"
-
 
 for year in "${years[@]}"
 do
