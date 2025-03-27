@@ -10,21 +10,24 @@ public:
     double rzp0, double rzp1, double rzp2,
     double dist, double f51, double f15, /*double Cross,*/
     double e55, double hiso, double eta,
-    double phi, double mono_eta, double mono_phi, double amon_eta, double amon_phi, double mono_E, 
+    double phi, double mono_eta, double mono_phi, double amon_eta, double amon_phi, 
+    double mono_E, double mono_Et, double amon_E, double amon_Et,
     double event, double NPV, double PFMET_pt) :
   subHits_(sh),subSatHits_(satsh),dEdXSig_(dedxsig),tIso_(tiso),xyp0_(xyp0),
   xyp1_(xyp1),xyp2_(xyp2),rzp0_(rzp0),rzp1_(rzp1),rzp2_(rzp2),
   dist_(dist),f51_(f51),f15_(f15),/*Cross_(Cross),*/e55_(e55),hIso_(hiso),
-  eta_(eta),phi_(phi),mono_eta_(mono_eta), mono_phi_(mono_phi),
-  amon_eta_(amon_eta), amon_phi_(amon_phi),event_(event),NPV_(NPV), PFMET_pt_(PFMET_pt) { }
+  eta_(eta),phi_(phi),mono_eta_(mono_eta), mono_phi_(mono_phi), amon_eta_(amon_eta), amon_phi_(amon_phi),
+  mono_E_(mono_E), mono_Et_(mono_Et), amon_E_(amon_E), amon_Et_(amon_Et),
+  event_(event),NPV_(NPV), PFMET_pt_(PFMET_pt) { }
   //This will be used in comparing with cut
   MonoCandidate(const MonoCandidate &mc) : 
     subHits_(mc.subHits_),subSatHits_(mc.subSatHits_),dEdXSig_(mc.dEdXSig_),tIso_(mc.tIso_),
     xyp0_(mc.xyp0_),xyp1_(mc.xyp1_),xyp2_(mc.xyp2_),
     rzp0_(mc.rzp0_),rzp1_(mc.rzp1_),rzp2_(mc.rzp2_),
     dist_(mc.dist_),f51_(mc.f51_),f15_(mc.f15_),/*Cross_(mc.Cross_),*/e55_(mc.e55_),
-    hIso_(mc.hIso_),eta_(mc.eta_),phi_(mc.phi_),mono_eta_(mc.mono_eta_), mono_phi_(mc.mono_phi_), mono_E_(mc.mono_E_),
-  amon_eta_(mc.amon_eta_), amon_phi_(mc.amon_phi_),event_(mc.event_),NPV_(mc.NPV_), PFMET_pt_(mc.PFMET_pt_) { } 
+    hIso_(mc.hIso_),eta_(mc.eta_),phi_(mc.phi_),mono_eta_(mc.mono_eta_), mono_phi_(mc.mono_phi_), amon_eta_(mc.amon_eta_), amon_phi_(mc.amon_phi_),
+    mono_E_(mc.mono_E_), mono_Et_(mc.mono_Et_), amon_E_(mc.amon_E_), amon_Et_(mc.amon_Et_),
+    event_(mc.event_),NPV_(mc.NPV_), PFMET_pt_(mc.PFMET_pt_) { } 
         
   ~MonoCandidate() {}
   bool operator<(const MonoCandidate &mc)const{
@@ -63,6 +66,9 @@ public:
   double amon_phi_;
   double PFMET_pt_;
   double mono_E_;
+  double mono_Et_;
+  double amon_E_;
+  double amon_Et_;
 
 };	
 class Photon

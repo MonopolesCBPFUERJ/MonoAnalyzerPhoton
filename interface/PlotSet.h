@@ -1,6 +1,6 @@
 #ifndef _PLOTSET_H_
 #define _PLOTSET_H_
-static const unsigned nPlot = 26U;
+static const unsigned nPlot = 30U;
 enum PlotName{
   FracSatVNstrips = 0, // fraction of saturated strips vs. number of strips
   DedXSig,             // dE/dX significance
@@ -27,7 +27,11 @@ enum PlotName{
   mono_phi,
   amon_eta,
   amon_phi,
-  mono_E
+  mono_E,
+  mono_Et,
+  amon_E,
+  amon_Et,
+  PFMET_pt
 };
 class PlotSet
 {

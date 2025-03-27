@@ -595,16 +595,19 @@ void MonoCuts::FillNoCutHistogram(int n,vector<MonoCandidate> Cand, bool matchin
 			z.GetPlot(E55)->Fill(Matched[0].e55_);
 			z.GetPlot(F51)->Fill(Matched[0].f51_);
 			z.GetPlot(eta)->Fill(Matched[0].eta_);
+			z.GetPlot(mono_eta)->Fill(Matched[0].mono_eta_);
+			z.GetPlot(amon_eta)->Fill(Matched[0].amon_eta_);
 			z.GetPlot(phi)->Fill(Matched[0].phi_);
+			z.GetPlot(mono_phi)->Fill(Matched[0].mono_phi_);
+			z.GetPlot(amon_phi)->Fill(Matched[0].amon_phi_);
+			z.GetPlot(mono_E)->Fill(Matched[0].mono_E_);
+			z.GetPlot(mono_Et)->Fill(Matched[0].mono_Et_);
+			z.GetPlot(amon_E)->Fill(Matched[0].amon_E_);
+			z.GetPlot(amon_Et)->Fill(Matched[0].amon_Et_);
+			z.GetPlot(PFMET_pt)->Fill(Matched[0].PFMET_pt_);
 			z.GetPlot(HcalIso)->Fill(Matched[0].hIso_);
 			z.GetPlot(ABCD)->Fill(Matched[0].f51_,Matched[0].dEdXSig_);
 
-			z.GetPlot(mono_eta)->Fill(Matched[0].mono_eta_);
-			z.GetPlot(amon_eta)->Fill(Matched[0].amon_eta_);
-			z.GetPlot(mono_phi)->Fill(Matched[0].mono_phi_);
-			z.GetPlot(amon_phi)->Fill(Matched[0].amon_phi_);
-
-			z.GetPlot(mono_E)->Fill(Matched[0].mono_E_);
 
 			for(int i=0; i < Matched.size() ;i++){
          		    //cout << i << endl;
@@ -635,6 +638,10 @@ void MonoCuts::FillNoCutHistogram(int n,vector<MonoCandidate> Cand, bool matchin
 			z.GetPlot(mono_phi)->Fill(Cand[i].mono_phi_);
 			z.GetPlot(amon_phi)->Fill(Cand[i].amon_phi_);
 			z.GetPlot(mono_E)->Fill(Cand[i].mono_E_);
+			z.GetPlot(mono_Et)->Fill(Cand[i].mono_Et_);
+			z.GetPlot(amon_E)->Fill(Cand[i].amon_E_);
+			z.GetPlot(amon_Et)->Fill(Cand[i].amon_Et_);
+			z.GetPlot(PFMET_pt)->Fill(Cand[i].PFMET_pt_);
 			z.GetPlot(HcalIso)->Fill(Cand[i].hIso_);
 			z.GetPlot(ABCD)->Fill(Cand[i].f51_,Cand[i].dEdXSig_);
 		 	x.GetProfile(PileUp_f51)->Fill(Cand[i].NPV_,Cand[i].f51_);
@@ -673,6 +680,10 @@ void MonoCuts::FillFlowHistogram(int n, vector<MonoCandidate> CutFlowCand, bool 
 			z.GetPlot(mono_phi)->Fill(Matched[0].mono_phi_);
 			z.GetPlot(amon_phi)->Fill(Matched[0].amon_phi_);
 			z.GetPlot(mono_E)->Fill(Matched[0].mono_E_);
+			z.GetPlot(mono_Et)->Fill(Matched[0].mono_Et_);
+			z.GetPlot(amon_E)->Fill(Matched[0].amon_E_);
+			z.GetPlot(amon_Et)->Fill(Matched[0].amon_Et_);
+			z.GetPlot(PFMET_pt)->Fill(Matched[0].PFMET_pt_);
 			z.GetPlot(HcalIso)->Fill(Matched[0].hIso_);
 			z.GetPlot(ABCD)->Fill(Matched[0].f51_,Matched[0].dEdXSig_);
 
@@ -704,6 +715,10 @@ void MonoCuts::FillFlowHistogram(int n, vector<MonoCandidate> CutFlowCand, bool 
 			z.GetPlot(mono_phi)->Fill(Matched[0].mono_phi_);
 			z.GetPlot(amon_phi)->Fill(Matched[0].amon_phi_);
 			z.GetPlot(mono_E)->Fill(Matched[0].mono_E_);
+			z.GetPlot(mono_Et)->Fill(Matched[0].mono_Et_);
+			z.GetPlot(amon_E)->Fill(Matched[0].amon_E_);
+			z.GetPlot(amon_Et)->Fill(Matched[0].amon_Et_);
+			z.GetPlot(PFMET_pt)->Fill(Matched[0].PFMET_pt_);
 			z.GetPlot(HcalIso)->Fill(CutFlowCand[i].hIso_);
 			z.GetPlot(ABCD)->Fill(CutFlowCand[0].f51_,CutFlowCand[0].dEdXSig_);
 
@@ -730,6 +745,10 @@ void MonoCuts::FillN1Histogram(int n, vector<MonoCandidate> N1CutCand){
 			z.GetPlot(mono_phi)->Fill(N1CutCand[i].mono_phi_);
 			z.GetPlot(amon_phi)->Fill(N1CutCand[i].amon_phi_);
 			z.GetPlot(mono_E)->Fill(N1CutCand[i].mono_E_);
+			z.GetPlot(mono_Et)->Fill(N1CutCand[i].mono_Et_);
+			z.GetPlot(amon_E)->Fill(N1CutCand[i].amon_E_);
+			z.GetPlot(amon_Et)->Fill(N1CutCand[i].amon_Et_);
+			z.GetPlot(PFMET_pt)->Fill(N1CutCand[i].PFMET_pt_);
             z.GetPlot(phi)->Fill(N1CutCand[i].phi_);
 	    z.GetPlot(HcalIso)->Fill(N1CutCand[i].hIso_);
 	    z.GetPlot(ABCD)->Fill(N1CutCand[i].f51_,N1CutCand[i].dEdXSig_);
@@ -1092,9 +1111,12 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 					(*phi)[i],
 					mono_eta,
 					mono_phi,
-					mono_E,
 					amon_eta,
 					amon_phi,
+					mono_E,
+					mono_Et,
+					amon_E,
+					amon_Et,
 					event,
 					NPV,
 					PFMET_pt
