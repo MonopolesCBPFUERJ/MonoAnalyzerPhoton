@@ -599,6 +599,13 @@ void MonoCuts::FillNoCutHistogram(int n,vector<MonoCandidate> Cand, bool matchin
 			z.GetPlot(HcalIso)->Fill(Matched[0].hIso_);
 			z.GetPlot(ABCD)->Fill(Matched[0].f51_,Matched[0].dEdXSig_);
 
+			z.GetPlot(mono_eta)->Fill(Matched[0].mono_eta_);
+			z.GetPlot(amon_eta)->Fill(Matched[0].amon_eta_);
+			z.GetPlot(mono_phi)->Fill(Matched[0].mono_phi_);
+			z.GetPlot(amon_phi)->Fill(Matched[0].amon_phi_);
+
+			z.GetPlot(mono_E)->Fill(Matched[0].mono_E_);
+
 			for(int i=0; i < Matched.size() ;i++){
          		    //cout << i << endl;
 			    x.GetProfile(PileUp_f51)->Fill(Matched[i].NPV_,Matched[i].f51_);
@@ -622,7 +629,12 @@ void MonoCuts::FillNoCutHistogram(int n,vector<MonoCandidate> Cand, bool matchin
 			z.GetPlot(E55)->Fill(Cand[i].e55_);
 			z.GetPlot(F51)->Fill(Cand[i].f51_);
 			z.GetPlot(eta)->Fill(Cand[i].eta_);
+			z.GetPlot(mono_eta)->Fill(Cand[i].mono_eta_);
+			z.GetPlot(amon_eta)->Fill(Cand[i].amon_eta_);
 			z.GetPlot(phi)->Fill(Cand[i].phi_);
+			z.GetPlot(mono_phi)->Fill(Cand[i].mono_phi_);
+			z.GetPlot(amon_phi)->Fill(Cand[i].amon_phi_);
+			z.GetPlot(mono_E)->Fill(Cand[i].mono_E_);
 			z.GetPlot(HcalIso)->Fill(Cand[i].hIso_);
 			z.GetPlot(ABCD)->Fill(Cand[i].f51_,Cand[i].dEdXSig_);
 		 	x.GetProfile(PileUp_f51)->Fill(Cand[i].NPV_,Cand[i].f51_);
@@ -655,7 +667,12 @@ void MonoCuts::FillFlowHistogram(int n, vector<MonoCandidate> CutFlowCand, bool 
 			z.GetPlot(E55)->Fill(Matched[0].e55_);
 			z.GetPlot(F51)->Fill(Matched[0].f51_);
 			z.GetPlot(eta)->Fill(Matched[0].eta_);
+			z.GetPlot(mono_eta)->Fill(Matched[0].mono_eta_);
+			z.GetPlot(amon_eta)->Fill(Matched[0].amon_eta_);
 			z.GetPlot(phi)->Fill(Matched[0].phi_);
+			z.GetPlot(mono_phi)->Fill(Matched[0].mono_phi_);
+			z.GetPlot(amon_phi)->Fill(Matched[0].amon_phi_);
+			z.GetPlot(mono_E)->Fill(Matched[0].mono_E_);
 			z.GetPlot(HcalIso)->Fill(Matched[0].hIso_);
 			z.GetPlot(ABCD)->Fill(Matched[0].f51_,Matched[0].dEdXSig_);
 
@@ -681,7 +698,12 @@ void MonoCuts::FillFlowHistogram(int n, vector<MonoCandidate> CutFlowCand, bool 
 			z.GetPlot(E55)->Fill(CutFlowCand[i].e55_);
 			z.GetPlot(F51)->Fill(CutFlowCand[i].f51_);
 			z.GetPlot(eta)->Fill(Matched[0].eta_);
+			z.GetPlot(mono_eta)->Fill(Matched[0].mono_eta_);
+			z.GetPlot(amon_eta)->Fill(Matched[0].amon_eta_);
 			z.GetPlot(phi)->Fill(Matched[0].phi_);
+			z.GetPlot(mono_phi)->Fill(Matched[0].mono_phi_);
+			z.GetPlot(amon_phi)->Fill(Matched[0].amon_phi_);
+			z.GetPlot(mono_E)->Fill(Matched[0].mono_E_);
 			z.GetPlot(HcalIso)->Fill(CutFlowCand[i].hIso_);
 			z.GetPlot(ABCD)->Fill(CutFlowCand[0].f51_,CutFlowCand[0].dEdXSig_);
 
@@ -703,6 +725,11 @@ void MonoCuts::FillN1Histogram(int n, vector<MonoCandidate> N1CutCand){
             z.GetPlot(E55)->Fill(N1CutCand[i].e55_);
 	    z.GetPlot(F51)->Fill(N1CutCand[i].f51_);
             z.GetPlot(eta)->Fill(N1CutCand[i].eta_);
+			z.GetPlot(mono_eta)->Fill(N1CutCand[i].mono_eta_);
+			z.GetPlot(amon_eta)->Fill(N1CutCand[i].amon_eta_);
+			z.GetPlot(mono_phi)->Fill(N1CutCand[i].mono_phi_);
+			z.GetPlot(amon_phi)->Fill(N1CutCand[i].amon_phi_);
+			z.GetPlot(mono_E)->Fill(N1CutCand[i].mono_E_);
             z.GetPlot(phi)->Fill(N1CutCand[i].phi_);
 	    z.GetPlot(HcalIso)->Fill(N1CutCand[i].hIso_);
 	    z.GetPlot(ABCD)->Fill(N1CutCand[i].f51_,N1CutCand[i].dEdXSig_);
@@ -989,51 +1016,52 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 	// Trigger for 2016
 	MonoCuts HLT175_TrgAnalysis("HLT_Photon175",oFile);
 	MonoCuts PFMET300_TrgAnalysis("HLT_PFMET300",oFile);
-	MonoCuts PFMHT140_TrgAnalysis("HLT_PFMET140_PFMHT140_IDTight", oFile);
-	MonoCuts PFMET170_TrgAnalysis("HLT_PFMET170_HBHE_BeamHaloCleaned", oFile);
+	//MonoCuts PFMHT140_TrgAnalysis("HLT_PFMET140_PFMHT140_IDTight", oFile);
+	//MonoCuts PFMET170_TrgAnalysis("HLT_PFMET170_HBHE_BeamHaloCleaned", oFile);
 
 	// Trigger for 2018
 	MonoCuts HLT200_TrgAnalysis("HLT_Photon200",oFile);
 	MonoCuts PFMET_TrgAnalysis("HLT_PFMET250_HBHECleaned",oFile);
-	MonoCuts CaloMET_TrgAnalysis("HLT_CaloMET350_HBHECleaned",oFile);
-	MonoCuts PFMET200_TrgAnalysis("HLT_PFMET200_HBHE_BeamHaloCleaned",oFile);
+	//MonoCuts CaloMET_TrgAnalysis("HLT_CaloMET350_HBHECleaned",oFile);
+	//MonoCuts PFMET200_TrgAnalysis("HLT_PFMET200_HBHE_BeamHaloCleaned",oFile);
 
 	// Trigger Combinations for 2016
-	MonoCuts Pho175_notPFMET300_TrgAnalysis("HLTPhoton175_notPFMET300",oFile);
-	MonoCuts Pho175_notPFMET170_TrgAnalysis("HLTPhoton175_notPFMET170",oFile);
+	//MonoCuts Pho175_notPFMET300_TrgAnalysis("HLTPhoton175_notPFMET300",oFile);
+	//MonoCuts Pho175_notPFMET170_TrgAnalysis("HLTPhoton175_notPFMET170",oFile);
 	MonoCuts notPho175_PFMET300_TrgAnalysis("notHLTPhoton175_PFMET300", oFile);
-	MonoCuts notPho175_PFMET170_TrgAnalysis("notHLTPhoton175_PFMET170", oFile);
+	//MonoCuts notPho175_PFMET170_TrgAnalysis("notHLTPhoton175_PFMET170", oFile);
 
 
 	// Trigger Combinations for 2018
-	MonoCuts Pho200_notPFMET_TrgAnalysis("HLTPhoton200_notPFMET250",oFile);
+	//MonoCuts Pho200_notPFMET_TrgAnalysis("HLTPhoton200_notPFMET250",oFile);
 	MonoCuts notPho200_PFMET_TrgAnalysis("notHLTPhoton200_PFMET250",oFile);
-    MonoCuts Pho200_notPFMET200_TrgAnalysis("HLTPhoton200_notPFMET200",oFile);
-	MonoCuts notPho200_PFMET200_TrgAnalysis("notHLTPhoton200_PFMET200",oFile);
+    //MonoCuts Pho200_notPFMET200_TrgAnalysis("HLTPhoton200_notPFMET200",oFile);
+	//MonoCuts notPho200_PFMET200_TrgAnalysis("notHLTPhoton200_PFMET200",oFile);
 
 	// Overlap Triggers for 2016
-	MonoCuts Pho175_or_PFMET300_TrgAnalysis("HLTPhoton175_or_PFMET300", oFile);
-        MonoCuts Pho175_or_PFMET170_TrgAnalysis("HLTPhoton175_or_PFMET170", oFile);
+	//MonoCuts Pho175_or_PFMET300_TrgAnalysis("HLTPhoton175_or_PFMET300", oFile);
+    //MonoCuts Pho175_or_PFMET170_TrgAnalysis("HLTPhoton175_or_PFMET170", oFile);
 
 	// Overlap Triggers for 2017/2018
-	MonoCuts Pho200_or_PFMET250_TrgAnalysis("HLTPhoton200_or_PFMET250", oFile);
-	MonoCuts Pho200_or_PFMET200_TrgAnalysis("HLTPhoton200_or_PFMET200",oFile);
+	//MonoCuts Pho200_or_PFMET250_TrgAnalysis("HLTPhoton200_or_PFMET250", oFile);
+	//MonoCuts Pho200_or_PFMET200_TrgAnalysis("HLTPhoton200_or_PFMET200",oFile);
 
 
 	// AND Triggers for 2016
-	MonoCuts Pho175_AND_PFMET300_TrgAnalysis("HLTPhoton175_AND_PFMET300", oFile);
-        MonoCuts Pho175_AND_PFMET170_TrgAnalysis("HLTPhoton175_AND_PFMET170", oFile);
+	//MonoCuts Pho175_AND_PFMET300_TrgAnalysis("HLTPhoton175_AND_PFMET300", oFile);
+    //    MonoCuts Pho175_AND_PFMET170_TrgAnalysis("HLTPhoton175_AND_PFMET170", oFile);
 
 	// AND Triggers for 2017/2018
-	MonoCuts Pho200_AND_PFMET250_TrgAnalysis("HLTPhoton200_AND_PFMET250", oFile);
-	MonoCuts Pho200_AND_PFMET200_TrgAnalysis("HLTPhoton200_AND_PFMET200", oFile);
+	//MonoCuts Pho200_AND_PFMET250_TrgAnalysis("HLTPhoton200_AND_PFMET250", oFile);
+	//MonoCuts Pho200_AND_PFMET200_TrgAnalysis("HLTPhoton200_AND_PFMET200", oFile);
 
 
 	vector<MonoCandidate> cand(10);	
 	vector<Photon> photon(0);
 
 	cout << "Generated " << NEvents << endl;
-	for(unsigned ev=0; ev<NEvents;ev++){
+	//for(unsigned ev=0; ev<NEvents;ev++){
+	for(unsigned ev=0; ev<1000;ev++){
 		if(ev%1000==0)	cout<<ev<<"/"<<NEvents<<endl;
 		tree->GetEntry(ev);
 
@@ -1064,6 +1092,7 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 					(*phi)[i],
 					mono_eta,
 					mono_phi,
+					mono_E,
 					amon_eta,
 					amon_phi,
 					event,
@@ -1179,7 +1208,6 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 			HLT200_TrgAnalysis.SignalEff("HLT_Photon200",NEvents);
             HLT200_TrgAnalysis.SaveAs_csv(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzerPhoton/PFMET_Strategy/csv_file/HLTPhoton200_Signaleff_"+process+"_"+year+"_"+mass+"_"+sys+"_"+matching+".csv").c_str(),NEvents,mass,"HLTPhoton200");
 
-			noTrgAnalysis.SaveAs_csv(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzerPhoton/PFMET_Strategy/csv_file/NOTRG_Signaleff_"+process+"_"+year+"_"+mass+"_"+sys+"_"+matching+".csv").c_str(),NEvents,mass,"NoTrg");
 			//PFMET_TrgAnalysis.WritePlots(oFile);
 			//PFMET_TrgAnalysis.SignalEff("HLT_PFMET250_HBHECleaned",NEvents);
 			//PFMET200_TrgAnalysis.WritePlots(oFile);

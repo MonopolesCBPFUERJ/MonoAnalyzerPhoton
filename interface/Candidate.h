@@ -10,7 +10,7 @@ public:
     double rzp0, double rzp1, double rzp2,
     double dist, double f51, double f15, /*double Cross,*/
     double e55, double hiso, double eta,
-    double phi, double mono_eta, double mono_phi, double amon_eta, double amon_phi, 
+    double phi, double mono_eta, double mono_phi, double amon_eta, double amon_phi, double mono_E, 
     double event, double NPV, double PFMET_pt) :
   subHits_(sh),subSatHits_(satsh),dEdXSig_(dedxsig),tIso_(tiso),xyp0_(xyp0),
   xyp1_(xyp1),xyp2_(xyp2),rzp0_(rzp0),rzp1_(rzp1),rzp2_(rzp2),
@@ -23,7 +23,7 @@ public:
     xyp0_(mc.xyp0_),xyp1_(mc.xyp1_),xyp2_(mc.xyp2_),
     rzp0_(mc.rzp0_),rzp1_(mc.rzp1_),rzp2_(mc.rzp2_),
     dist_(mc.dist_),f51_(mc.f51_),f15_(mc.f15_),/*Cross_(mc.Cross_),*/e55_(mc.e55_),
-    hIso_(mc.hIso_),eta_(mc.eta_),phi_(mc.phi_),mono_eta_(mc.mono_eta_), mono_phi_(mc.mono_phi_),
+    hIso_(mc.hIso_),eta_(mc.eta_),phi_(mc.phi_),mono_eta_(mc.mono_eta_), mono_phi_(mc.mono_phi_), mono_E_(mc.mono_E_),
   amon_eta_(mc.amon_eta_), amon_phi_(mc.amon_phi_),event_(mc.event_),NPV_(mc.NPV_), PFMET_pt_(mc.PFMET_pt_) { } 
         
   ~MonoCandidate() {}
@@ -62,6 +62,7 @@ public:
   double amon_eta_;
   double amon_phi_;
   double PFMET_pt_;
+  double mono_E_;
 
 };	
 class Photon

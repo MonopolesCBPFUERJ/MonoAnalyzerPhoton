@@ -31,6 +31,12 @@ public:
         x.CreatPlot(HcalIso,new TH1F("HcalIso","",100,0,30));
         x.CreatPlot(ABCD,new TH2D("ABCD","",100,0,1.1,100,0,30));
 
+        x.CreatPlot(mono_eta,new TH1F("mono_eta","",100,-5.0,5.0));
+        x.CreatPlot(amon_eta,new TH1F("amon_eta","",100,-5.0,5.0));
+        x.CreatPlot(mono_phi,new TH1F("mono_phi","",100,-5.0,5.0));
+        x.CreatPlot(amon_phi,new TH1F("amon_phi","",100,-5.0,5.0));
+        x.CreatPlot(mono_E,new TH1F("mono_E","",100,0.0,5000.0));
+
         NoCutProfile.resize(1U);
         PlotSet &p = NoCutProfile[0];
         p.CreatProfile(EcalBarrel,new TProfile("EcalBarrel","",30,0,1.1,0,30));
@@ -71,6 +77,13 @@ public:
            z.CreatPlot(F51,new TH1F((cutn1name+"F51").c_str(),"",100,0.0,1.1));
            z.CreatPlot(HcalIso,new TH1F((cutn1name+"HcalIso").c_str(),"",100,0,30));
            z.CreatPlot(ABCD,new TH2D((cutn1name+"ABCD").c_str(),"",100,0,1.1,100,0,30));
+
+           z.CreatPlot(mono_eta,new TH1F((cutn1name+"mono_eta").c_str(),"",100,-5.0,5.0));
+           z.CreatPlot(amon_eta,new TH1F((cutn1name+"amon_eta").c_str(),"",100,-5.0,5.0));
+           z.CreatPlot(mono_phi,new TH1F((cutn1name+"mono_phi").c_str(),"",100,-5.0,5.0));
+           z.CreatPlot(amon_phi,new TH1F((cutn1name+"amon_phi").c_str(),"",100,-5.0,5.0));
+           z.CreatPlot(mono_E,new TH1F((cutn1name+"mono_E").c_str(),"",100,0.0,5000.0));
+
 	}
 
         // The CutFlow Plots: 
@@ -97,6 +110,12 @@ public:
            y.CreatPlot(F51,new TH1F((cutflowName+"F51").c_str(),"",100,0.0,1.1));
            y.CreatPlot(HcalIso,new TH1F((cutflowName+"HcalIso").c_str(),"",100,0,30));
            y.CreatPlot(ABCD,new TH2D((cutflowName+"ABCD").c_str(),"",100,0,1.1,100,0,30));
+
+           y.CreatPlot(mono_eta,new TH1F((cutflowName+"mono_eta").c_str(),"",100,-5.0,5.0));
+           y.CreatPlot(amon_eta,new TH1F((cutflowName+"amon_eta").c_str(),"",100,-5.0,5.0));
+           y.CreatPlot(mono_phi,new TH1F((cutflowName+"mono_phi").c_str(),"",100,-5.0,5.0));
+           y.CreatPlot(amon_phi,new TH1F((cutflowName+"amon_phi").c_str(),"",100,-5.0,5.0));
+           y.CreatPlot(mono_E,new TH1F((cutflowName+"mono_E").c_str(),"",100,0.0,5000.0));
 
        	   PlotSet &w = Profile[c];
        	   w.CreatProfile(EcalBarrel ,new TProfile((cutflowName+"EcalBarrel").c_str(),"",30,0,1.1,0,30));
