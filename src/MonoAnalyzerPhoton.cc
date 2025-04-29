@@ -1093,8 +1093,8 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 	vector<Photon> photon(0);
 
 	cout << "Generated " << NEvents << endl;
-	//for(unsigned ev=0; ev<NEvents;ev++){
-	for(unsigned ev=0; ev<10000;ev++){
+	//for(unsigned ev=0; ev<10000;ev++){
+	for(unsigned ev=0; ev<NEvents;ev++){
 		//cout << "ev: " << ev << endl;
 		if(ev%1000==0)	cout<<ev<<"/"<<NEvents<<endl;
 		tree->GetEntry(ev);
