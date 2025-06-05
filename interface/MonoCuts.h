@@ -41,6 +41,8 @@ public:
         x.CreatPlot(amon_Et,new TH1F("amon_Et","",200,0.0,8000.0));
         x.CreatPlot(PFMET_pt,new TH1F("PFMET_pt","",100,0.0,2000.0));
 
+        x.CreatPlot(eRight,new TH1F("eRight","",100,0.0,200.0));
+
         NoCutProfile.resize(1U);
         PlotSet &p = NoCutProfile[0];
         p.CreatProfile(EcalBarrel,new TProfile("EcalBarrel","",30,0,1.1,0,30));
@@ -92,6 +94,8 @@ public:
            z.CreatPlot(amon_Et,new TH1F((cutn1name+"amon_Et").c_str(),"",200,0.0,8000.0));
            z.CreatPlot(PFMET_pt,new TH1F((cutn1name+"PFMET_pt").c_str(),"",100,0.0,2000.0));
 
+           z.CreatPlot(eRight,new TH1F((cutn1name+"eRight").c_str(),"",100,0.0,2000.0));
+
 
 	}
 
@@ -129,6 +133,8 @@ public:
            y.CreatPlot(amon_E,new TH1F((cutflowName+"amon_E").c_str(),"",200,0.0,8000.0));
            y.CreatPlot(amon_Et,new TH1F((cutflowName+"amon_Et").c_str(),"",200,0.0,8000.0));
            y.CreatPlot(PFMET_pt,new TH1F((cutflowName+"PFMET_pt").c_str(),"",100,0.0,2000.0));
+
+           y.CreatPlot(eRight,new TH1F((cutflowName+"eRight").c_str(),"",100,0.0,2000.0));
 
        	   PlotSet &w = Profile[c];
        	   w.CreatProfile(EcalBarrel ,new TProfile((cutflowName+"EcalBarrel").c_str(),"",30,0,1.1,0,30));

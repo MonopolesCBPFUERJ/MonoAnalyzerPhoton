@@ -595,6 +595,7 @@ void MonoCuts::FillNoCutHistogram(int n,vector<MonoCandidate> Cand, bool matchin
 			z.GetPlot(E55)->Fill(Matched[0].e55_);
 			z.GetPlot(F51)->Fill(Matched[0].f51_);
 			z.GetPlot(eta)->Fill(Matched[0].eta_);
+			z.GetPlot(eRight)->Fill(Matched[0].eRight_);
 			//z.GetPlot(mono_eta)->Fill(Matched[0].mono_eta_);
 			//z.GetPlot(amon_eta)->Fill(Matched[0].amon_eta_);
 			z.GetPlot(phi)->Fill(Matched[0].phi_);
@@ -645,6 +646,7 @@ void MonoCuts::FillNoCutHistogram(int n,vector<MonoCandidate> Cand, bool matchin
 			z.GetPlot(E55)->Fill(Cand[i].e55_);
 			z.GetPlot(F51)->Fill(Cand[i].f51_);
 			z.GetPlot(eta)->Fill(Cand[i].eta_);
+			z.GetPlot(eRight)->Fill(Cand[i].eRight_);
 			z.GetPlot(mono_eta)->Fill(Cand[i].mono_eta_);
 			z.GetPlot(amon_eta)->Fill(Cand[i].amon_eta_);
 			z.GetPlot(phi)->Fill(Cand[i].phi_);
@@ -689,6 +691,7 @@ void MonoCuts::FillFlowHistogram(int n, vector<MonoCandidate> CutFlowCand, bool 
 			z.GetPlot(E55)->Fill(Matched[0].e55_);
 			z.GetPlot(F51)->Fill(Matched[0].f51_);
 			z.GetPlot(eta)->Fill(Matched[0].eta_);
+			z.GetPlot(eRight)->Fill(Matched[0].eRight_);
 			//z.GetPlot(mono_eta)->Fill(Matched[0].mono_eta_);
 			//z.GetPlot(amon_eta)->Fill(Matched[0].amon_eta_);
 			z.GetPlot(phi)->Fill(Matched[0].phi_);
@@ -738,6 +741,7 @@ void MonoCuts::FillFlowHistogram(int n, vector<MonoCandidate> CutFlowCand, bool 
 			z.GetPlot(E55)->Fill(CutFlowCand[i].e55_);
 			z.GetPlot(F51)->Fill(CutFlowCand[i].f51_);
 			z.GetPlot(eta)->Fill(Matched[0].eta_);
+			z.GetPlot(eRight)->Fill(Matched[0].eRight_);
 			z.GetPlot(mono_eta)->Fill(Matched[0].mono_eta_);
 			z.GetPlot(amon_eta)->Fill(Matched[0].amon_eta_);
 			z.GetPlot(phi)->Fill(Matched[0].phi_);
@@ -941,8 +945,9 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 
 		// Photon-Fusion Samples
 		//tree->Add(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/"+year+"/MM_SpinHalf_PF_"+year+"_"+mass+".root").c_str()); 
-		tree->Add(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/MET_corrected/"+year+"/MM_"+process+"_M-"+mass+"_"+year+".root").c_str());
-		cout << "/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/MET_corrected/"+year+"/MM_"+process+"_M-"+mass+"_"+year+".root" << endl;
+		//tree->Add(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/MET_corrected/"+year+"/MM_"+process+"_M-"+mass+"_"+year+".root").c_str());
+		//cout << "/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/MET_corrected/"+year+"/MM_"+process+"_M-"+mass+"_"+year+".root" << endl;
+		tree->Add("/eos/user/t/tmenezes/Monopole_Ntuples/June04_extraVars_test.root");
 
 
 
@@ -964,13 +969,15 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 	}
 
 	// Photon strategy
- 	TFile *oFile = new TFile(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzerPhoton/Photon_Strategy/"+year+"/"+process+"/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root").c_str(),"recreate");
-    cout << "Created output file at:" << "/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzer/Photon_Strategy/"+year+"/"+process+"/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root" << endl;
+ 	//TFile *oFile = new TFile(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzerPhoton/Photon_Strategy/"+year+"/"+process+"/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root").c_str(),"recreate");
+    //cout << "Created output file at:" << "/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzer/Photon_Strategy/"+year+"/"+process+"/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root" << endl;
 
 	// PFMET Strategy output
 	//TFile *oFile = new TFile(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzerPhoton/PFMET_Strategy/"+year+"/"+process+"/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root").c_str(),"recreate");
     //cout << "Created output file at:" << "/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzer/PFMET_Strategy/"+year+"/"+process+"/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root" << endl;
 
+
+	TFile *oFile = new TFile("/eos/user/t/tmenezes/Monopole_Ntuples/output_June04_extraVars_test.root","recreate");
 
 
 
@@ -982,6 +989,7 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
         Bool_t passHLT_PFMET300;
         Bool_t passHLT_MET200;
         Bool_t passHLT_PFMET250_HBHECleaned;
+		Bool_t passHLT_CaloMET300_HBHECleaned;
         Bool_t passHLT_CaloMET350_HBHECleaned;
  	Bool_t passHLT_PFMET140_PFMHT140_IDTight;
 	Bool_t passHLT_PFMET170_HBHE_BeamHaloCleaned;
@@ -1024,6 +1032,10 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 	vector<double> * pho_eta = 0;
 	vector<double> * pho_phi = 0;
 	vector<double> * pho_pt = 0;
+
+	vector<double> * eRight = 0;
+
+
 	unsigned nPhoton;
 
 	vector<double> * Cross = 0;
@@ -1038,7 +1050,8 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 	tree->SetBranchAddress("passHLT_PFMET300",&passHLT_PFMET300);
         tree->SetBranchAddress("passHLT_MET200",&passHLT_MET200);
         tree->SetBranchAddress("passHLT_PFMET250_HBHECleaned",&passHLT_PFMET250_HBHECleaned);
-        tree->SetBranchAddress("passHLT_CaloMET350_HBHECleaned",&passHLT_CaloMET350_HBHECleaned);
+        tree->SetBranchAddress("passHLT_CaloMET300_HBHECleaned",&passHLT_CaloMET300_HBHECleaned);
+		tree->SetBranchAddress("passHLT_CaloMET350_HBHECleaned",&passHLT_CaloMET350_HBHECleaned);
 	tree->SetBranchAddress("passHLT_PFMET140_PFMHT140_IDTight", &passHLT_PFMET140_PFMHT140_IDTight);
 	tree->SetBranchAddress("passHLT_PFMET170_HBHE_BeamHaloCleaned", &passHLT_PFMET170_HBHE_BeamHaloCleaned);
 	tree->SetBranchAddress("passHLT_PFMET200_HBHE_BeamHaloCleaned", &passHLT_PFMET200_HBHE_BeamHaloCleaned);
@@ -1080,6 +1093,8 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 	tree->SetBranchAddress("pho_pt",&pho_pt);
 	//tree->SetBranchAddress("cand_SwissCross",&Cross);
 
+	// Extra cluster variables
+	tree->SetBranchAddress("cand_eRight",&eRight);
 
 	const unsigned NEvents = tree->GetEntries();
 
@@ -1094,7 +1109,7 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 	// Trigger for 2018
 	MonoCuts HLT200_TrgAnalysis("HLT_Photon200",oFile);
 	MonoCuts PFMET_TrgAnalysis("HLT_PFMET250_HBHECleaned",oFile);
-	//MonoCuts CaloMET_TrgAnalysis("HLT_CaloMET350_HBHECleaned",oFile);
+	MonoCuts CaloMET_TrgAnalysis("HLT_CaloMET300_HBHECleaned",oFile);
 	//MonoCuts PFMET200_TrgAnalysis("HLT_PFMET200_HBHE_BeamHaloCleaned",oFile);
 
 	// Trigger Combinations for 2016
@@ -1174,7 +1189,8 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 					event,
 					NPV,
 					PFMET_pt,
-                    matched_to_mono
+                    matched_to_mono,
+					(*eRight)[i]
 						);
 		}
 		if(nPhoton!=0){
@@ -1219,8 +1235,11 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 		else{
 			// Single Triggers
 		    HLT200_TrgAnalysis.doAnalysis(cand,photon,nCandidates,nPhoton,passHLT_Photon200,ev,matching_option,year,PFMET_pt);                       
-        	//PFMET_TrgAnalysis.doAnalysis(cand,photon,nCandidates,nPhoton,passHLT_PFMET250_HBHECleaned,ev,matching_option,year,PFMET_pt);   
+        	PFMET_TrgAnalysis.doAnalysis(cand,photon,nCandidates,nPhoton,passHLT_PFMET250_HBHECleaned,ev,matching_option,year,PFMET_pt);   
 			//PFMET200_TrgAnalysis.doAnalysis(cand,photon,nCandidates,nPhoton,passHLT_PFMET200_HBHE_BeamHaloCleaned,ev,matching_option,year,PFMET_pt);
+			CaloMET_TrgAnalysis.doAnalysis(cand,photon,nCandidates,nPhoton,passHLT_CaloMET300_HBHECleaned,ev,matching_option,year,PFMET_pt);   
+
+
 
 			// Trigger Combinations
 			//Pho200_notPFMET_TrgAnalysis.doAnalysis_altertriggers(cand,photon,nCandidates,nPhoton,passHLT_Photon200,passHLT_PFMET250_HBHECleaned,ev,matching_option,year,PFMET_pt);
@@ -1285,8 +1304,12 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 			HLT200_TrgAnalysis.SignalEff("HLT_Photon200",NEvents);
             HLT200_TrgAnalysis.SaveAs_csv(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzerPhoton/Photon_Strategy/csv_file/HLTPhoton200_Signaleff_"+process+"_"+year+"_"+mass+"_"+sys+"_"+matching+".csv").c_str(),NEvents,mass,"HLTPhoton200");
 
-			//PFMET_TrgAnalysis.WritePlots(oFile);
-			//PFMET_TrgAnalysis.SignalEff("HLT_PFMET250_HBHECleaned",NEvents);
+			CaloMET_TrgAnalysis.WritePlots(oFile);
+			CaloMET_TrgAnalysis.SignalEff("HLT_CaloMET300_HBHECleaned",NEvents);
+
+
+			PFMET_TrgAnalysis.WritePlots(oFile);
+			PFMET_TrgAnalysis.SignalEff("HLT_PFMET250_HBHECleaned",NEvents);
 			//PFMET200_TrgAnalysis.WritePlots(oFile);
 			//PFMET200_TrgAnalysis.SignalEff("HLT_PFMET200_HBHE_BeamHaloCleaned",NEvents);
 			//Pho200_notPFMET_TrgAnalysis.WritePlots(oFile);
