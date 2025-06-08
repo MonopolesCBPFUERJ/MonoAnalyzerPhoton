@@ -1,4 +1,3 @@
-// MonoAnalyzerPhoton.cc
 //	Created by  Shih Lin
 //	
 //	Analysis code for Photon trigger(HLT_Photon175/200)
@@ -593,9 +592,19 @@ void MonoCuts::FillNoCutHistogram(int n,vector<MonoCandidate> Cand, bool matchin
 			z.GetPlot(RZPar1)->Fill(Matched[0].rzp1_);
 			z.GetPlot(RZcurv)->Fill(Matched[0].rzp2_);
 			z.GetPlot(E55)->Fill(Matched[0].e55_);
+			z.GetPlot(E99)->Fill(Matched[0].e99_);
 			z.GetPlot(F51)->Fill(Matched[0].f51_);
 			z.GetPlot(eta)->Fill(Matched[0].eta_);
 			z.GetPlot(eRight)->Fill(Matched[0].eRight_);
+			z.GetPlot(eLeft)->Fill(Matched[0].eLeft_);
+			z.GetPlot(eTop)->Fill(Matched[0].eTop_);
+			z.GetPlot(eBottom)->Fill(Matched[0].eBottom_);
+			z.GetPlot(eMax)->Fill(Matched[0].eMax_);
+			z.GetPlot(e2x5Right)->Fill(Matched[0].e2x5Right_);
+			z.GetPlot(e2x5Left)->Fill(Matched[0].e2x5Left_);
+			z.GetPlot(e2x5Top)->Fill(Matched[0].e2x5Top_);
+			z.GetPlot(e2x5Bottom)->Fill(Matched[0].e2x5Bottom_);
+			z.GetPlot(e2x5Max)->Fill(Matched[0].e2x5Max_);
 			//z.GetPlot(mono_eta)->Fill(Matched[0].mono_eta_);
 			//z.GetPlot(amon_eta)->Fill(Matched[0].amon_eta_);
 			z.GetPlot(phi)->Fill(Matched[0].phi_);
@@ -644,9 +653,19 @@ void MonoCuts::FillNoCutHistogram(int n,vector<MonoCandidate> Cand, bool matchin
 			z.GetPlot(RZPar1)->Fill(Cand[i].rzp1_);
 			z.GetPlot(RZcurv)->Fill(Cand[i].rzp2_);
 			z.GetPlot(E55)->Fill(Cand[i].e55_);
+			z.GetPlot(E99)->Fill(Cand[i].e99_);
 			z.GetPlot(F51)->Fill(Cand[i].f51_);
 			z.GetPlot(eta)->Fill(Cand[i].eta_);
 			z.GetPlot(eRight)->Fill(Cand[i].eRight_);
+			z.GetPlot(eLeft)->Fill(Cand[i].eLeft_);
+			z.GetPlot(eTop)->Fill(Cand[i].eTop_);
+			z.GetPlot(eBottom)->Fill(Cand[i].eBottom_);
+			z.GetPlot(eMax)->Fill(Cand[i].eMax_);
+			z.GetPlot(e2x5Right)->Fill(Cand[i].e2x5Right_);
+			z.GetPlot(e2x5Left)->Fill(Cand[i].e2x5Left_);
+			z.GetPlot(e2x5Top)->Fill(Cand[i].e2x5Top_);
+			z.GetPlot(e2x5Bottom)->Fill(Cand[i].e2x5Bottom_);
+			z.GetPlot(e2x5Max)->Fill(Cand[i].e2x5Max_);
 			z.GetPlot(mono_eta)->Fill(Cand[i].mono_eta_);
 			z.GetPlot(amon_eta)->Fill(Cand[i].amon_eta_);
 			z.GetPlot(phi)->Fill(Cand[i].phi_);
@@ -689,9 +708,19 @@ void MonoCuts::FillFlowHistogram(int n, vector<MonoCandidate> CutFlowCand, bool 
 			z.GetPlot(RZPar1)->Fill(Matched[0].rzp1_);
 			z.GetPlot(RZcurv)->Fill(Matched[0].rzp2_);
 			z.GetPlot(E55)->Fill(Matched[0].e55_);
+			z.GetPlot(E99)->Fill(Matched[0].e99_);
 			z.GetPlot(F51)->Fill(Matched[0].f51_);
 			z.GetPlot(eta)->Fill(Matched[0].eta_);
 			z.GetPlot(eRight)->Fill(Matched[0].eRight_);
+			z.GetPlot(eLeft)->Fill(Matched[0].eLeft_);
+			z.GetPlot(eTop)->Fill(Matched[0].eTop_);
+			z.GetPlot(eBottom)->Fill(Matched[0].eBottom_);
+			z.GetPlot(eMax)->Fill(Matched[0].eMax_);
+			z.GetPlot(e2x5Right)->Fill(Matched[0].e2x5Right_);
+			z.GetPlot(e2x5Left)->Fill(Matched[0].e2x5Left_);
+			z.GetPlot(e2x5Top)->Fill(Matched[0].e2x5Top_);
+			z.GetPlot(e2x5Bottom)->Fill(Matched[0].e2x5Bottom_);
+			z.GetPlot(e2x5Max)->Fill(Matched[0].e2x5Max_);
 			//z.GetPlot(mono_eta)->Fill(Matched[0].mono_eta_);
 			//z.GetPlot(amon_eta)->Fill(Matched[0].amon_eta_);
 			z.GetPlot(phi)->Fill(Matched[0].phi_);
@@ -739,9 +768,19 @@ void MonoCuts::FillFlowHistogram(int n, vector<MonoCandidate> CutFlowCand, bool 
 			z.GetPlot(RZPar1)->Fill(CutFlowCand[i].rzp1_);
 			z.GetPlot(RZcurv)->Fill(CutFlowCand[i].rzp2_);
 			z.GetPlot(E55)->Fill(CutFlowCand[i].e55_);
+			z.GetPlot(E99)->Fill(CutFlowCand[i].e99_);
 			z.GetPlot(F51)->Fill(CutFlowCand[i].f51_);
 			z.GetPlot(eta)->Fill(Matched[0].eta_);
 			z.GetPlot(eRight)->Fill(Matched[0].eRight_);
+			z.GetPlot(eLeft)->Fill(Matched[0].eLeft_);
+			z.GetPlot(eTop)->Fill(Matched[0].eTop_);
+			z.GetPlot(eBottom)->Fill(Matched[0].eBottom_);
+			z.GetPlot(eMax)->Fill(Matched[0].eMax_);
+			z.GetPlot(e2x5Right)->Fill(Matched[0].e2x5Right_);
+			z.GetPlot(e2x5Left)->Fill(Matched[0].e2x5Left_);
+			z.GetPlot(e2x5Top)->Fill(Matched[0].e2x5Top_);
+			z.GetPlot(e2x5Bottom)->Fill(Matched[0].e2x5Bottom_);
+			z.GetPlot(e2x5Max)->Fill(Matched[0].e2x5Max_);
 			z.GetPlot(mono_eta)->Fill(Matched[0].mono_eta_);
 			z.GetPlot(amon_eta)->Fill(Matched[0].amon_eta_);
 			z.GetPlot(phi)->Fill(Matched[0].phi_);
@@ -947,8 +986,11 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 		//tree->Add(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/"+year+"/MM_SpinHalf_PF_"+year+"_"+mass+".root").c_str()); 
 		//tree->Add(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/MET_corrected/"+year+"/MM_"+process+"_M-"+mass+"_"+year+".root").c_str());
 		//cout << "/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/MET_corrected/"+year+"/MM_"+process+"_M-"+mass+"_"+year+".root" << endl;
-		tree->Add("/eos/user/t/tmenezes/Monopole_Ntuples/June04_extraVars_test.root");
-
+		//tree->Add("/eos/user/t/tmenezes/Monopole_Ntuples/June04_extraVars_test.root");
+		
+		// extra Variables
+		tree->Add(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/MET_corrected/2018_extraVars/MM_"+process+"_M-"+mass+"_"+year+".root").c_str());
+                cout << "/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/MET_corrected/2018_extraVars/MM_"+process+"_M-"+mass+"_"+year+".root" << endl;
 
 
 	}
@@ -969,15 +1011,15 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 	}
 
 	// Photon strategy
- 	//TFile *oFile = new TFile(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzerPhoton/Photon_Strategy/"+year+"/"+process+"/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root").c_str(),"recreate");
-    //cout << "Created output file at:" << "/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzer/Photon_Strategy/"+year+"/"+process+"/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root" << endl;
+ 	TFile *oFile = new TFile(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzerPhoton/Photon_Strategy/"+year+"/"+process+"/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root").c_str(),"recreate");
+    cout << "Created output file at:" << "/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzer/Photon_Strategy/"+year+"/"+process+"/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root" << endl;
 
 	// PFMET Strategy output
 	//TFile *oFile = new TFile(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzerPhoton/PFMET_Strategy/"+year+"/"+process+"/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root").c_str(),"recreate");
     //cout << "Created output file at:" << "/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzer/PFMET_Strategy/"+year+"/"+process+"/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root" << endl;
 
 
-	TFile *oFile = new TFile("/eos/user/t/tmenezes/Monopole_Ntuples/output_June04_extraVars_test.root","recreate");
+	//TFile *oFile = new TFile("/eos/user/t/tmenezes/Monopole_Ntuples/output_June04_extraVars_test.root","recreate");
 
 
 
@@ -1026,6 +1068,7 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 	vector<double> * f51 = 0;
 	vector<double> * f15 = 0;
 	vector<double> * e55 = 0;
+	vector<double> * e99 = 0;
 	vector<double> * hIso = 0;
 	vector<double> * eta = 0;
 	vector<double> * phi = 0;
@@ -1034,6 +1077,16 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 	vector<double> * pho_pt = 0;
 
 	vector<double> * eRight = 0;
+	vector<double> * eLeft = 0;
+	vector<double> * eTop = 0;
+	vector<double> * eBottom = 0;
+	vector<double> * eMax = 0;
+
+	vector<double> * e2x5Right = 0;
+	vector<double> * e2x5Left = 0;
+	vector<double> * e2x5Top = 0;
+	vector<double> * e2x5Bottom = 0;
+	vector<double> * e2x5Max = 0;
 
 
 	unsigned nPhoton;
@@ -1065,6 +1118,7 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 	tree->SetBranchAddress("cand_f51",&f51);
 	tree->SetBranchAddress("cand_f15",&f15);
 	tree->SetBranchAddress("cand_e55",&e55);
+	tree->SetBranchAddress("cand_e99",&e99);
 	tree->SetBranchAddress("cand_HIso",&hIso);
 	tree->SetBranchAddress("cand_XYPar0",&xyp0);
 	tree->SetBranchAddress("cand_XYPar1",&xyp1);
@@ -1095,6 +1149,16 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 
 	// Extra cluster variables
 	tree->SetBranchAddress("cand_eRight",&eRight);
+	tree->SetBranchAddress("cand_eLeft",&eLeft);
+	tree->SetBranchAddress("cand_eTop",&eTop);
+	tree->SetBranchAddress("cand_eBottom",&eBottom);
+	tree->SetBranchAddress("cand_eMax",&eMax);
+
+	tree->SetBranchAddress("cand_e2x5Right",&e2x5Right);
+	tree->SetBranchAddress("cand_e2x5Left",&e2x5Left);
+	tree->SetBranchAddress("cand_e2x5Top",&e2x5Top);
+	tree->SetBranchAddress("cand_e2x5Bottom",&e2x5Bottom);
+	tree->SetBranchAddress("cand_e2x5Max",&e2x5Max);
 
 	const unsigned NEvents = tree->GetEntries();
 
@@ -1175,6 +1239,7 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 					(*f15)[i],
 					//(*Cross)[i],
 					(*e55)[i],
+					(*e99)[i],
 					(*hIso)[i],
 					(*eta)[i],
 					(*phi)[i],
@@ -1190,7 +1255,16 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 					NPV,
 					PFMET_pt,
                     matched_to_mono,
-					(*eRight)[i]
+					(*eRight)[i],
+					(*eLeft)[i],
+					(*eTop)[i],
+					(*eBottom)[i],
+					(*eMax)[i],
+					(*e2x5Right)[i],
+					(*e2x5Left)[i],
+					(*e2x5Top)[i],
+					(*e2x5Bottom)[i],
+					(*e2x5Max)[i]
 						);
 		}
 		if(nPhoton!=0){

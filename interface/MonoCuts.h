@@ -24,6 +24,7 @@ public:
         x.CreatPlot(RZcurv,new TH1F("RZcurv","",100,-0.01,0.01));
 	//x.CreatPlot(E55,new TH1F("E55","",100,-1,1200));
         x.CreatPlot(E55,new TH1F("E55","",100,0.0,1500));
+        x.CreatPlot(E99,new TH1F("E99","",100,0.0,1500));
         //x.CreatPlot(F51,new TH1F("F51","",100,0.2,1.1));
         x.CreatPlot(F51,new TH1F("F51","",100,0.0,1.1));
         x.CreatPlot(eta,new TH1F("eta","",100,-5.0,5.0));
@@ -41,7 +42,19 @@ public:
         x.CreatPlot(amon_Et,new TH1F("amon_Et","",200,0.0,8000.0));
         x.CreatPlot(PFMET_pt,new TH1F("PFMET_pt","",100,0.0,2000.0));
 
+
         x.CreatPlot(eRight,new TH1F("eRight","",100,0.0,200.0));
+        x.CreatPlot(eLeft,new TH1F("eLeft","",100,0.0,200.0));
+        x.CreatPlot(eTop,new TH1F("eTop","",100,0.0,200.0));
+        x.CreatPlot(eBottom,new TH1F("eBottom","",100,0.0,200.0));
+        x.CreatPlot(eMax,new TH1F("eMax","",100,0.0,20.0));
+
+        x.CreatPlot(e2x5Right,new TH1F("e2x5Right","",100,0.0,200.0));
+        x.CreatPlot(e2x5Left,new TH1F("e2x5Left","",100,0.0,200.0));
+        x.CreatPlot(e2x5Top,new TH1F("e2x5Top","",100,0.0,200.0));
+        x.CreatPlot(e2x5Bottom,new TH1F("e2x5Bottom","",100,0.0,200.0));
+        x.CreatPlot(e2x5Max,new TH1F("e2x5Max","",100,0.0,2000.0));
+        
 
         NoCutProfile.resize(1U);
         PlotSet &p = NoCutProfile[0];
@@ -77,6 +90,7 @@ public:
 	   z.CreatPlot(RZcurv,new TH1F((cutn1name+"RZcurv").c_str(),"",100,-0.01,0.01));
            //z.CreatPlot(E55,new TH1F((cutn1name+"E55").c_str(),"",100,-1,1200));
            z.CreatPlot(E55,new TH1F((cutn1name+"E55").c_str(),"",100,0.0,1500));
+           z.CreatPlot(E99,new TH1F((cutn1name+"E99").c_str(),"",100,0.0,1500));
            //z.CreatPlot(F51,new TH1F((cutn1name+"F51").c_str(),"",100,0.2,1.1));
            z.CreatPlot(eta,new TH1F((cutn1name+"eta").c_str(),"",100,-5.0,5.0));
            z.CreatPlot(phi,new TH1F((cutn1name+"phi").c_str(),"",100,-5.0,5.0));
@@ -95,6 +109,17 @@ public:
            z.CreatPlot(PFMET_pt,new TH1F((cutn1name+"PFMET_pt").c_str(),"",100,0.0,2000.0));
 
            z.CreatPlot(eRight,new TH1F((cutn1name+"eRight").c_str(),"",100,0.0,2000.0));
+           z.CreatPlot(eLeft,new TH1F((cutn1name+"eLeft").c_str(),"",100,0.0,2000.0));
+           z.CreatPlot(eTop,new TH1F((cutn1name+"eTop").c_str(),"",100,0.0,2000.0));
+           z.CreatPlot(eBottom,new TH1F((cutn1name+"eBottom").c_str(),"",100,0.0,2000.0));
+           z.CreatPlot(eMax,new TH1F((cutn1name+"eMax").c_str(),"",100,0.0,20.0));
+
+           z.CreatPlot(e2x5Right,new TH1F((cutn1name+"e2x5Right").c_str(),"",100,0.0,2000.0));
+           z.CreatPlot(e2x5Left,new TH1F((cutn1name+"e2x5Left").c_str(),"",100,0.0,2000.0));
+           z.CreatPlot(e2x5Top,new TH1F((cutn1name+"e2x5Top").c_str(),"",100,0.0,2000.0));
+           z.CreatPlot(e2x5Bottom,new TH1F((cutn1name+"e2x5Bottom").c_str(),"",100,0.0,2000.0));
+           z.CreatPlot(e2x5Max,new TH1F((cutn1name+"e2x5Max").c_str(),"",100,0.0,2000.0));
+
 
 
 	}
@@ -117,6 +142,7 @@ public:
            y.CreatPlot(RZcurv,new TH1F((cutflowName+"RZcurv").c_str(),"",100,-0.01,0.01));
            //y.CreatPlot(E55,new TH1F((cutflowName+"E55").c_str(),"",100,-1,1200));
            y.CreatPlot(E55,new TH1F((cutflowName+"E55").c_str(),"",100,0.0,1500));
+           y.CreatPlot(E99,new TH1F((cutflowName+"E99").c_str(),"",100,0.0,1500));
            y.CreatPlot(eta,new TH1F((cutflowName+"eta").c_str(),"",100,-5.0,5.0));
            y.CreatPlot(phi,new TH1F((cutflowName+"phi").c_str(),"",100,-5.0,5.0));
            //y.CreatPlot(F51,new TH1F((cutflowName+"F51").c_str(),"",100,0.2,1.1));
@@ -135,6 +161,17 @@ public:
            y.CreatPlot(PFMET_pt,new TH1F((cutflowName+"PFMET_pt").c_str(),"",100,0.0,2000.0));
 
            y.CreatPlot(eRight,new TH1F((cutflowName+"eRight").c_str(),"",100,0.0,2000.0));
+           y.CreatPlot(eLeft,new TH1F((cutflowName+"eLeft").c_str(),"",100,0.0,2000.0));
+           y.CreatPlot(eBottom,new TH1F((cutflowName+"eBottom").c_str(),"",100,0.0,2000.0));
+           y.CreatPlot(eTop,new TH1F((cutflowName+"eTop").c_str(),"",100,0.0,2000.0));
+           y.CreatPlot(eMax,new TH1F((cutflowName+"eMax").c_str(),"",100,0.0,20.0));
+
+
+           y.CreatPlot(e2x5Right,new TH1F((cutflowName+"e2x5Right").c_str(),"",100,0.0,2000.0));
+           y.CreatPlot(e2x5Left,new TH1F((cutflowName+"e2x5Left").c_str(),"",100,0.0,2000.0));
+           y.CreatPlot(e2x5Bottom,new TH1F((cutflowName+"e2x5Bottom").c_str(),"",100,0.0,2000.0));
+           y.CreatPlot(e2x5Top,new TH1F((cutflowName+"e2x5Top").c_str(),"",100,0.0,2000.0));
+           y.CreatPlot(e2x5Max,new TH1F((cutflowName+"e2x5Max").c_str(),"",100,0.0,2000.0));
 
        	   PlotSet &w = Profile[c];
        	   w.CreatProfile(EcalBarrel ,new TProfile((cutflowName+"EcalBarrel").c_str(),"",30,0,1.1,0,30));
