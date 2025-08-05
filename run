@@ -3,8 +3,8 @@
 
 years=("2018")
 processes=("SpinHalf_DrellYan")
-#masses=("2000")
-masses=("1000" "1500" "2000" "2500" "3000" "3500" "4000" "4500")
+masses=("2000")
+#masses=("1500" "2000" "2500" "3000" "3500" "4000" "4500")
 
 
 for year in "${years[@]}"

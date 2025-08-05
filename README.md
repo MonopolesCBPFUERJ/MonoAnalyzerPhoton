@@ -14,9 +14,9 @@ Structure for this repo:
 
 This source file only analyze the signal MC. The input file are in Phat eos space:
 
-`/eos/cms/store/group/offcomp_upgrade-sw/srimanob/monopole/13TeV/Legacy-RECO-v2/`
-and in the Thales eos space. 
-`/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/`
+Private Production: `/eos/cms/store/group/offcomp_upgrade-sw/srimanob/monopole/13TeV/Legacy-RECO-v2/`
+Central Production (four production modes): `/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/` or `/eos/cms/store/group/offcomp_upgrade-sw/srimanob/monopole/signal/MET_corrected`
+Note: The Central Production have the Type-1 PFMET correction. 
 
 
 **note that you must change the path of inputFile in the code [line](https://github.com/sun51027/Monopole-Analysis/blob/main/MonoAnalyzerPhoton/src/MonoAnalyzerPhoton.cc#L393)**
@@ -61,9 +61,10 @@ Contact Lin if you have any questions: lshih@cern.ch
 
 The code is designed to run with:
 Two Strategies: Photon and PFMET
-Four processes: SpinHalf_DY, SpinZero_DY, SpinHalf_PF, SpinZero_PF 
+Four processes: SpinHalf_DrellYan, SpinZero_DrellYan, SpinHalf_PhotonFusion, SpinZero_PhotonFusion 
 
-
+The script "run" is designed to run through all four processes and mass points. To be executed with `./run`
+Production of a logfile, which should be changed to match the selected strategy. 
 The MonoAnalyzerPhoton function had a string process added to account for all the processes.
 
 `root -l -q "src/MonoAnalyzerPhoton.cc("2018","1000",\"SpinHalf_DY",1 ,0)" `
