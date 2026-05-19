@@ -586,6 +586,8 @@ void MonoCuts::FillNoCutHistogram(int n,vector<MonoCandidate> Cand, bool matchin
 	
 			z.GetPlot(FracSatVNstrips)->Fill(Matched[0].subHits_,Matched[0].subSatHits_/Matched[0].subHits_);
 			z.GetPlot(DedXSig)->Fill(Matched[0].dEdXSig_);
+			z.GetPlot(DedXSig_up)->Fill(Matched[0].dEdXSig_up_);
+			z.GetPlot(DedXSig_down)->Fill(Matched[0].dEdXSig_down_);
 			z.GetPlot(XYPar0)->Fill(Matched[0].xyp0_);
 			z.GetPlot(XYPar1)->Fill(Matched[0].xyp1_);
 			z.GetPlot(XYPar2)->Fill(Matched[0].xyp2_);
@@ -631,6 +633,8 @@ void MonoCuts::FillNoCutHistogram(int n,vector<MonoCandidate> Cand, bool matchin
 		for(int i=0; i < Cand.size() ;i++){
 			z.GetPlot(FracSatVNstrips)->Fill(Cand[i].subHits_,Cand[i].subSatHits_/Cand[i].subHits_);
 			z.GetPlot(DedXSig)->Fill(Cand[i].dEdXSig_);
+                        z.GetPlot(DedXSig_up)->Fill(Cand[i].dEdXSig_up_);
+                        z.GetPlot(DedXSig_down)->Fill(Cand[i].dEdXSig_down_);
 			z.GetPlot(XYPar0)->Fill(Cand[i].xyp0_);
 			z.GetPlot(XYPar1)->Fill(Cand[i].xyp1_);
 			z.GetPlot(XYPar2)->Fill(Cand[i].xyp2_);
@@ -678,6 +682,8 @@ void MonoCuts::FillFlowHistogram(int n, vector<MonoCandidate> CutFlowCand, bool 
 		if(Matched.size() != 0){	
 			z.GetPlot(FracSatVNstrips)->Fill(Matched[0].subHits_,Matched[0].subSatHits_/Matched[0].subHits_);
 			z.GetPlot(DedXSig)->Fill(Matched[0].dEdXSig_);
+			z.GetPlot(DedXSig_up)->Fill(Matched[0].dEdXSig_up_);
+			z.GetPlot(DedXSig_down)->Fill(Matched[0].dEdXSig_down_);
 			z.GetPlot(XYPar0)->Fill(Matched[0].xyp1_);
 			z.GetPlot(XYPar1)->Fill(Matched[0].xyp0_);
 			z.GetPlot(XYPar2)->Fill(Matched[0].xyp2_);
@@ -720,6 +726,8 @@ void MonoCuts::FillFlowHistogram(int n, vector<MonoCandidate> CutFlowCand, bool 
 		for(int i=0; i < CutFlowCand.size() ;i++){
 			z.GetPlot(FracSatVNstrips)->Fill(CutFlowCand[i].subHits_,CutFlowCand[i].subSatHits_/CutFlowCand[i].subHits_);
 			z.GetPlot(DedXSig)->Fill(CutFlowCand[i].dEdXSig_);
+			z.GetPlot(DedXSig_up)->Fill(CutFlowCand[i].dEdXSig_up_);
+			z.GetPlot(DedXSig_down)->Fill(CutFlowCand[i].dEdXSig_down_);
 			z.GetPlot(XYPar0)->Fill(CutFlowCand[i].xyp0_);
 			z.GetPlot(XYPar1)->Fill(CutFlowCand[i].xyp1_);
 			z.GetPlot(XYPar2)->Fill(CutFlowCand[i].xyp2_);
@@ -759,6 +767,8 @@ void MonoCuts::FillN1Histogram(int n, vector<MonoCandidate> N1CutCand){
 	for(int i=0; i < N1CutCand.size() ;i++){
 	    z.GetPlot(FracSatVNstrips)->Fill(N1CutCand[i].subHits_,N1CutCand[i].subSatHits_/N1CutCand[i].subHits_);
 	    z.GetPlot(DedXSig)->Fill(N1CutCand[i].dEdXSig_);
+	    z.GetPlot(DedXSig_up)->Fill(N1CutCand[i].dEdXSig_up_);
+	    z.GetPlot(DedXSig_down)->Fill(N1CutCand[i].dEdXSig_down_);
 	    z.GetPlot(RZcurv)->Fill(N1CutCand[i].rzp2_);
             z.GetPlot(E55)->Fill(N1CutCand[i].e55_);
 	    z.GetPlot(F51)->Fill(N1CutCand[i].f51_);
@@ -933,11 +943,14 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 		//cout << "/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/"+year+"/MM_"+process+"_M-"+mass+"_"+year+".root" << endl;
 
                 // Type-1 MET corrected Centrally Produced Samples (SpinZero and SpinHalf for DY and PF)
-                tree->Add(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/MET_corrected/"+year+"/MM_"+process+"_M-"+mass+"_"+year+".root").c_str());
+                //tree->Add(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/MET_corrected/"+year+"/MM_"+process+"_M-"+mass+"_"+year+".root").c_str());
 		
 		// extra Variables
 		//tree->Add(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/MET_corrected/2018_OOT_kWeird/MM_"+process+"_M-"+mass+"_"+year+".root").c_str());
                 //cout << "/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/MET_corrected/2018_OOT_kWeird/MM_"+process+"_M-"+mass+"_"+year+".root" << endl;
+
+                // dEdXSig modeling validation
+		tree->Add(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/MET_corrected/2018_dEdX_Systematics/MM_"+process+"_M-"+mass+"_"+year+".root").c_str());	
 
                 // Birks' Law studies
                 //tree->Add(("/eos/user/t/tmenezes/Monopole_Ntuples/PrivateProduction_SpinHalf_DrellYan/RECO_BirksOff/SpinHalf_DrellYan_BirksOn_"+mass+"_"+year+".root").c_str());
@@ -972,9 +985,13 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
  	//TFile *oFile = new TFile(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzerPhoton/Photon_Strategy/"+year+"/"+process+"/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root").c_str(),"recreate");
         //cout << "Created output file at:" << "/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzer/Photon_Strategy/"+year+"/"+process+"/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root" << endl;
 
-        // Central Production - PFMET strategy
-        TFile *oFile = new TFile(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzerPhoton/PFMET_Strategy/"+year+"/"+process+"/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root").c_str(),"recreate");
+        // Central Production - PFMET strategy
+       //TFile *oFile = new TFile(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzerPhoton/PFMET_Strategy/"+year+"/"+process+"/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root").c_str(),"recreate");
 	//cout << "Created output file at:" << "/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzer/PFMET_Strategy/"+year+"/"+process+"/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root" << endl;
+
+ 	// dEdX Systematics
+	TFile *oFile = new TFile(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/dEdX_output_MonoAnalyzerPhoton/PFMET_Strategy/"+year+"/"+process+"/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root").c_str(),"recreate");
+
 
 	// Central Production - Photon strategy: modified e55
 	//TFile *oFile = new TFile(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzerPhoton/Photon_Strategy/modified_e55/"+year+"/"+process+"/kWeirdkOOT_MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root").c_str(),"recreate");
@@ -1030,6 +1047,8 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 	vector<double> *subHits=0;
 	vector<double> *subSatHits=0;
 	vector<double> *dEdXSig=0;
+	vector<double> *dEdXSig_up=0;
+	vector<double> *dEdXSig_down=0;
 	vector<double> * tIso = 0;
 	vector<double> * xyp0 = 0;
 	vector<double> * xyp1 = 0;
@@ -1076,6 +1095,8 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 	tree->SetBranchAddress("cand_SubHits",&subHits);
 	tree->SetBranchAddress("cand_SatSubHits",&subSatHits);
 	tree->SetBranchAddress("cand_dEdXSig",&dEdXSig);
+	tree->SetBranchAddress("cand_dEdXSig_up",&dEdXSig_up);
+	tree->SetBranchAddress("cand_dEdXSig_down",&dEdXSig_down);
 	tree->SetBranchAddress("cand_TIso",&tIso);
 	tree->SetBranchAddress("cand_f51",&f51);
 	tree->SetBranchAddress("cand_f15",&f15);
@@ -1190,6 +1211,8 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 					(*subHits)[i],
 					(*subSatHits)[i],
 					(*dEdXSig)[i],
+					(*dEdXSig_up)[i],
+					(*dEdXSig_down)[i],
 					(*xyp0)[i],
 					(*xyp1)[i],
 					(*xyp2)[i],
@@ -1274,7 +1297,7 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 
 
 
-			// Overlap Photon+MET
+			 // Overlap Photon+MET
 			//Pho200_or_PFMET250_TrgAnalysis.doAnalysis_ORtriggers(cand,photon,nCandidates,nPhoton,passHLT_Photon200,passHLT_PFMET250_HBHECleaned,ev,matching_option,year,PFMET_pt);
 			//Pho200_or_PFMET200_TrgAnalysis.doAnalysis_ORtriggers(cand,photon,nCandidates,nPhoton,passHLT_Photon200,passHLT_PFMET200_HBHE_BeamHaloCleaned,ev,matching_option,year,PFMET_pt);
 			//Pho200_AND_PFMET250_TrgAnalysis.doAnalysis_ANDtriggers(cand,photon,nCandidates,nPhoton,passHLT_Photon200,passHLT_PFMET250_HBHECleaned,ev,matching_option,year,PFMET_pt);
