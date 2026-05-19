@@ -16,6 +16,8 @@ public:
         x.CreatPlot(FracSatVNstrips,new TH2D("FracSatVNstrips","",100,0,1000,100,0,1));
         //x.CreatPlot(DedXSig,new TH1F("DedXSig","",100,0,30));
         x.CreatPlot(DedXSig,new TH1F("dEdXSig","",100,0,30));
+	x.CreatPlot(DedXSig_up,new TH1F("dEdXSig_up","",100,0,30));
+	x.CreatPlot(DedXSig_down,new TH1F("dEdXSig_down","",100,0,30));
         x.CreatPlot(XYPar0,new TH1F("XYPar0","",50,-1,1));
         x.CreatPlot(XYPar1,new TH1F("XYPar1","",100,-10,10));
         x.CreatPlot(XYPar2,new TH1F("XYPar2","",100,-20000,20000));
@@ -70,6 +72,8 @@ public:
 	   z.CreatPlot(FracSatVNstrips,new TH2D((cutn1name+"FracSatVNstrips").c_str(),"",100,0,1000,100,0,1));
 	   //z.CreatPlot(DedXSig,new TH1F((cutn1name+"DedXSig").c_str(),"",100,0,30));
            z.CreatPlot(DedXSig,new TH1F((cutn1name+"dEdXSig").c_str(),"",100,0,30));
+	   z.CreatPlot(DedXSig_up,new TH1F((cutn1name+"dEdXSig_up").c_str(),"",100,0,30));
+	   z.CreatPlot(DedXSig_down,new TH1F((cutn1name+"dEdXSig_down").c_str(),"",100,0,30));
            z.CreatPlot(XYPar0,new TH1F((cutn1name+"XYPar0").c_str(),"",100,-1,1));
            z.CreatPlot(XYPar1,new TH1F((cutn1name+"XYPar1").c_str(),"",100,-10,10));
            z.CreatPlot(XYPar2,new TH1F((cutn1name+"XYPar2").c_str(),"",100,-20000,20000));
@@ -109,6 +113,8 @@ public:
            y.CreatPlot(FracSatVNstrips,new TH2D((cutflowName+"FracSatVNstrips").c_str(),"",100,0,1000,100,0,1));
            //y.CreatPlot(DedXSig,new TH1F((cutflowName+"DedXSig").c_str(),"",100,0,30));
            y.CreatPlot(DedXSig,new TH1F((cutflowName+"dEdXSig").c_str(),"",100,0,30));
+	   y.CreatPlot(DedXSig_up,new TH1F((cutflowName+"dEdXSig_up").c_str(),"",100,0,30));
+	   y.CreatPlot(DedXSig_down,new TH1F((cutflowName+"dEdXSig_down").c_str(),"",100,0,30));
            y.CreatPlot(XYPar0,new TH1F((cutflowName+"XYPar0").c_str(),"",100,-1,1));
            y.CreatPlot(XYPar1,new TH1F((cutflowName+"XYPar1").c_str(),"",100,-10,10));
            y.CreatPlot(XYPar2,new TH1F((cutflowName+"XYPar2").c_str(),"",100,-20000,20000));

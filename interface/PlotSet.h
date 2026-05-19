@@ -1,9 +1,11 @@
 #ifndef _PLOTSET_H_
 #define _PLOTSET_H_
-static const unsigned nPlot = 31U;
+static const unsigned nPlot = 33U;
 enum PlotName{
   FracSatVNstrips = 0, // fraction of saturated strips vs. number of strips
   DedXSig,             // dE/dX significance
+  DedXSig_up,          // dE/dX signficance up variation
+  DedXSig_down,          // dE/dX signficance down variation
   XYPar0,//d0
   XYPar1,//phi0
   XYPar2,//radius

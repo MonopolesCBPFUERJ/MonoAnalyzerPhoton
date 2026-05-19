@@ -7,14 +7,14 @@ class MonoCandidate
 public:
   MonoCandidate() {}
 
-  MonoCandidate(double sh, double satsh, double dedxsig, double xyp0, double xyp1, double xyp2,
+  MonoCandidate(double sh, double satsh, double dedxsig, double dedxsig_up, double dedxsig_down, double xyp0, double xyp1, double xyp2,
                 double rzp0, double rzp1, double rzp2,
                 double dist, double f51, double f15, 
                 double e55, double hiso, double eta,
                 double phi, double mono_eta, double mono_phi, double amon_eta, double amon_phi,
                 double mono_Et, double amon_Et, double mono_KE, double amon_KE,
                 double event, double NPV, double PFMET_pt, double PFMET_phi, bool matched_to_mono) :
-      subHits_(sh), subSatHits_(satsh), dEdXSig_(dedxsig),
+      subHits_(sh), subSatHits_(satsh), dEdXSig_(dedxsig), dEdXSig_up_(dedxsig_up), dEdXSig_down_(dedxsig_down),
       xyp0_(xyp0), xyp1_(xyp1), xyp2_(xyp2),
       rzp0_(rzp0), rzp1_(rzp1), rzp2_(rzp2),
       dist_(dist), f51_(f51), f15_(f15), e55_(e55), hIso_(hiso), 
@@ -24,7 +24,7 @@ public:
       event_(event), NPV_(NPV), PFMET_pt_(PFMET_pt), PFMET_phi_(PFMET_phi), matched_to_mono_(matched_to_mono) {}
 
   MonoCandidate(const MonoCandidate &mc) :
-      subHits_(mc.subHits_), subSatHits_(mc.subSatHits_), dEdXSig_(mc.dEdXSig_),
+      subHits_(mc.subHits_), subSatHits_(mc.subSatHits_), dEdXSig_(mc.dEdXSig_), dEdXSig_up_(mc.dEdXSig_up_), dEdXSig_down_(mc.dEdXSig_down_),
       xyp0_(mc.xyp0_), xyp1_(mc.xyp1_), xyp2_(mc.xyp2_),
       rzp0_(mc.rzp0_), rzp1_(mc.rzp1_), rzp2_(mc.rzp2_),
       dist_(mc.dist_), f51_(mc.f51_), f15_(mc.f15_), e55_(mc.e55_), hIso_(mc.hIso_),
@@ -44,6 +44,8 @@ public:
   double subHits_;
   double subSatHits_;
   double dEdXSig_;
+  double dEdXSig_up_;
+  double dEdXSig_down_;
   double xyp0_;
   double xyp1_;
   double xyp2_;
