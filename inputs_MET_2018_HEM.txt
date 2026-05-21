@@ -1,0 +1,4 @@
+/eos/user/t/tmenezes/Monopole_Ntuples/Data/Trimmed_Datasets/METcorrected/Run2018A.root
+/eos/user/t/tmenezes/Monopole_Ntuples/Data/Trimmed_Datasets/METcorrected/Run2018B_HEM.root
+/eos/user/t/tmenezes/Monopole_Ntuples/Data/Trimmed_Datasets/METcorrected/Run2018C_HEM.root
+/eos/user/t/tmenezes/Monopole_Ntuples/Data/Trimmed_Datasets/METcorrected/Run2018D_HEM.root
