@@ -29,6 +29,8 @@ public:
         //x.CreatPlot(E99,new TH1F("E99","",100,0.0,1500));
         //x.CreatPlot(F51,new TH1F("F51","",100,0.2,1.1));
         x.CreatPlot(F51,new TH1F("F51","",100,0.0,1.1));
+        x.CreatPlot(F51_up,new TH1F("F51_up","",100,0.0,1.1));
+        x.CreatPlot(F51_down,new TH1F("F51_down","",100,0.0,1.1));
         x.CreatPlot(eta,new TH1F("eta","",100,-5.0,5.0));
         x.CreatPlot(phi,new TH1F("phi","",100,-5.0,5.0));
         x.CreatPlot(HcalIso,new TH1F("HcalIso","",100,0,30));
@@ -87,6 +89,8 @@ public:
            z.CreatPlot(eta,new TH1F((cutn1name+"eta").c_str(),"",100,-5.0,5.0));
            z.CreatPlot(phi,new TH1F((cutn1name+"phi").c_str(),"",100,-5.0,5.0));
            z.CreatPlot(F51,new TH1F((cutn1name+"F51").c_str(),"",100,0.0,1.1));
+           z.CreatPlot(F51_up,new TH1F((cutn1name+"F51_up").c_str(),"",100,0.0,1.1));
+           z.CreatPlot(F51_down,new TH1F((cutn1name+"F51_down").c_str(),"",100,0.0,1.1));
            z.CreatPlot(HcalIso,new TH1F((cutn1name+"HcalIso").c_str(),"",100,0,30));
            z.CreatPlot(ABCD,new TH2D((cutn1name+"ABCD").c_str(),"",100,0,1.1,100,0,30));
 
@@ -128,6 +132,8 @@ public:
            y.CreatPlot(phi,new TH1F((cutflowName+"phi").c_str(),"",100,-5.0,5.0));
            //y.CreatPlot(F51,new TH1F((cutflowName+"F51").c_str(),"",100,0.2,1.1));
            y.CreatPlot(F51,new TH1F((cutflowName+"F51").c_str(),"",100,0.0,1.1));
+           y.CreatPlot(F51_up,new TH1F((cutflowName+"F51_up").c_str(),"",100,0.0,1.1));
+           y.CreatPlot(F51_down,new TH1F((cutflowName+"F51_down").c_str(),"",100,0.0,1.1));
            y.CreatPlot(HcalIso,new TH1F((cutflowName+"HcalIso").c_str(),"",100,0,30));
            y.CreatPlot(ABCD,new TH2D((cutflowName+"ABCD").c_str(),"",100,0,1.1,100,0,30));
 

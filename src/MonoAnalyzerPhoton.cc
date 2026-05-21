@@ -597,6 +597,8 @@ void MonoCuts::FillNoCutHistogram(int n,vector<MonoCandidate> Cand, bool matchin
 			z.GetPlot(E55)->Fill(Matched[0].e55_);
 			//z.GetPlot(E99)->Fill(Matched[0].e99_);
 			z.GetPlot(F51)->Fill(Matched[0].f51_);
+                        z.GetPlot(F51_up)->Fill(Matched[0].f51_up_);
+                        z.GetPlot(F51_down)->Fill(Matched[0].f51_down_);
 			z.GetPlot(eta)->Fill(Matched[0].eta_);
 			z.GetPlot(phi)->Fill(Matched[0].phi_);
                         //z.GetPlot(mono_ECAL)->Fill(Matched[0].mono_ECAL_);
@@ -644,6 +646,8 @@ void MonoCuts::FillNoCutHistogram(int n,vector<MonoCandidate> Cand, bool matchin
 			z.GetPlot(E55)->Fill(Cand[i].e55_);
 			//z.GetPlot(E99)->Fill(Cand[i].e99_);
 			z.GetPlot(F51)->Fill(Cand[i].f51_);
+                        z.GetPlot(F51_up)->Fill(Cand[i].f51_up_);
+                        z.GetPlot(F51_down)->Fill(Cand[i].f51_down_);
 			z.GetPlot(eta)->Fill(Cand[i].eta_);
 			z.GetPlot(mono_eta)->Fill(Cand[i].mono_eta_);
 			z.GetPlot(amon_eta)->Fill(Cand[i].amon_eta_);
@@ -693,6 +697,8 @@ void MonoCuts::FillFlowHistogram(int n, vector<MonoCandidate> CutFlowCand, bool 
 			z.GetPlot(E55)->Fill(Matched[0].e55_);
 			//z.GetPlot(E99)->Fill(Matched[0].e99_);
 			z.GetPlot(F51)->Fill(Matched[0].f51_);
+                        z.GetPlot(F51_up)->Fill(Matched[0].f51_up_);
+                        z.GetPlot(F51_down)->Fill(Matched[0].f51_down_);
                         //z.GetPlot(mono_ECAL)->Fill(Matched[0].mono_ECAL_);
                         z.GetPlot(PFMET_pt)->Fill(Matched[0].PFMET_pt_);
                         z.GetPlot(PFMET_phi)->Fill(Matched[0].PFMET_phi_);
@@ -737,7 +743,9 @@ void MonoCuts::FillFlowHistogram(int n, vector<MonoCandidate> CutFlowCand, bool 
 			z.GetPlot(E55)->Fill(CutFlowCand[i].e55_);
 			//z.GetPlot(E99)->Fill(CutFlowCand[i].e99_);
 			z.GetPlot(F51)->Fill(CutFlowCand[i].f51_);
-			z.GetPlot(eta)->Fill(CutFlowCand[i].eta_);
+			z.GetPlot(F51_up)->Fill(CutFlowCand[i].f51_up_);
+                        z.GetPlot(F51_down)->Fill(CutFlowCand[i].f51_down_);
+                        z.GetPlot(eta)->Fill(CutFlowCand[i].eta_);
                         z.GetPlot(mono_eta)->Fill(CutFlowCand[i].mono_eta_);                        
                         z.GetPlot(amon_eta)->Fill(CutFlowCand[i].amon_eta_);
                         z.GetPlot(phi)->Fill(CutFlowCand[i].phi_);
@@ -772,6 +780,8 @@ void MonoCuts::FillN1Histogram(int n, vector<MonoCandidate> N1CutCand){
 	    z.GetPlot(RZcurv)->Fill(N1CutCand[i].rzp2_);
             z.GetPlot(E55)->Fill(N1CutCand[i].e55_);
 	    z.GetPlot(F51)->Fill(N1CutCand[i].f51_);
+            z.GetPlot(F51_up)->Fill(N1CutCand[i].f51_up_);
+            z.GetPlot(F51_down)->Fill(N1CutCand[i].f51_down_);
             z.GetPlot(eta)->Fill(N1CutCand[i].eta_);
 	    z.GetPlot(mono_eta)->Fill(N1CutCand[i].mono_eta_);
 	    z.GetPlot(amon_eta)->Fill(N1CutCand[i].amon_eta_);
@@ -949,8 +959,8 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 		//tree->Add(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/MET_corrected/2018_OOT_kWeird/MM_"+process+"_M-"+mass+"_"+year+".root").c_str());
                 //cout << "/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/MET_corrected/2018_OOT_kWeird/MM_"+process+"_M-"+mass+"_"+year+".root" << endl;
 
-                // dEdXSig modeling validation
-		tree->Add(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/MET_corrected/2018_dEdX_Systematics/MM_"+process+"_M-"+mass+"_"+year+".root").c_str());	
+                // dEdXSig and f51 modeling validation
+		tree->Add(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/MET_corrected/2018_f51_dEdx_HCAL_Systematics/MM_"+process+"_M-"+mass+"_"+year+".root").c_str());	
 
                 // Birks' Law studies
                 //tree->Add(("/eos/user/t/tmenezes/Monopole_Ntuples/PrivateProduction_SpinHalf_DrellYan/RECO_BirksOff/SpinHalf_DrellYan_BirksOn_"+mass+"_"+year+".root").c_str());
@@ -990,7 +1000,7 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 	//cout << "Created output file at:" << "/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzer/PFMET_Strategy/"+year+"/"+process+"/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root" << endl;
 
  	// dEdX Systematics
-	TFile *oFile = new TFile(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/dEdX_output_MonoAnalyzerPhoton/PFMET_Strategy/"+year+"/"+process+"/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root").c_str(),"recreate");
+	TFile *oFile = new TFile(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/dEdX_f51_output_MonoAnalyzerPhoton/PFMET_Strategy/"+year+"/"+process+"/Nominal/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root").c_str(),"recreate");
 
 
 	// Central Production - Photon strategy: modified e55
@@ -1058,6 +1068,8 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 	vector<double> * rzp2 = 0;
 	vector<double> * dist = 0;
 	vector<double> * f51 = 0;
+        vector<double> * f51_up = 0;
+        vector<double> * f51_down = 0;
 	vector<double> * f15 = 0;
 	vector<double> * e55 = 0;
 	vector<double> * e99 = 0;
@@ -1099,6 +1111,8 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 	tree->SetBranchAddress("cand_dEdXSig_down",&dEdXSig_down);
 	tree->SetBranchAddress("cand_TIso",&tIso);
 	tree->SetBranchAddress("cand_f51",&f51);
+        tree->SetBranchAddress("cand_f51_up",&f51_up);
+        tree->SetBranchAddress("cand_f51_down",&f51_down); 
 	tree->SetBranchAddress("cand_f15",&f15);
 	tree->SetBranchAddress("cand_e55",&e55);
 	//tree->SetBranchAddress("cand_e55SUM",&e55);        // e55 including OOT RecHits (from MonoNtupleDumper). Ignore for now
@@ -1222,6 +1236,8 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
 					(*dist)[i],
 					(*f51)[i],
 					(*f15)[i],
+                                        (*f51_up)[i],
+                                        (*f51_down)[i],
 					//(*Cross)[i],
 					(*e55)[i],
 					(*hIso)[i],

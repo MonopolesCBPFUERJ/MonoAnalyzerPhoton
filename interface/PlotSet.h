@@ -1,6 +1,6 @@
 #ifndef _PLOTSET_H_
 #define _PLOTSET_H_
-static const unsigned nPlot = 33U;
+static const unsigned nPlot = 35U;
 enum PlotName{
   FracSatVNstrips = 0, // fraction of saturated strips vs. number of strips
   DedXSig,             // dE/dX significance
@@ -14,6 +14,8 @@ enum PlotName{
   RZcurv,              // RZ curvature/uncertainty
   E55,
   F51,                 // frac 51
+  F51_up,
+  F51_down,
   eta,                 // eta
   phi,                 // phi
   HcalIso,             // Hcal Iso
