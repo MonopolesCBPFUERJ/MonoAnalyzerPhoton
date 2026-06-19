@@ -326,7 +326,6 @@ def get_regions(regions_scheme: str, f51_loose: float, dEdx_loose: float) -> pd.
     return pd.DataFrame(rows)
 
 
-
 def ABCD_plot(
     data: pd.DataFrame,
     year: str,
@@ -336,74 +335,360 @@ def ABCD_plot(
     trigger: str,
     outdir: Path,
 ) -> pd.DataFrame:
+    unblind = int(unblind)
+
     f51_loose, dEdx_loose = get_loose_values(year)
-    LOGGER.info("Year=%s f51_loose=%.3f dEdx_loose=%.3f", year, f51_loose, dEdx_loose)
+    LOGGER.info(
+        "Year=%s f51_loose=%.3f dEdx_loose=%.3f",
+        year,
+        f51_loose,
+        dEdx_loose,
+    )
 
     regions = get_regions(regions_scheme, f51_loose, dEdx_loose)
     data = data.drop_duplicates(subset=["cand_f51", "Significance"]).copy()
 
-    if unblind == 0:
-        data = data[
-            ~(
-                (data["cand_f51"] >= f51_loose)
-                & (data["cand_f51"] <= 1.0)
-                & (data["Significance"] >= dEdx_loose)
-                & (data["Significance"] <= 30.0)
-            )
-        ]
-    elif unblind == 1:
-        data = data[
-            ~(
-                (data["cand_f51"] >= 0.85)
-                & (data["cand_f51"] <= 1.0)
-                & (data["Significance"] >= 9.0)
-                & (data["Significance"] <= 30.0)
-            )
-        ]
-    elif unblind == 21:
-        data = data[
-            ~(
-                (
-                    (data["cand_f51"] >= f51_loose)
-                    & (data["cand_f51"] <= 1.0)
-                    & (data["Significance"] >= dEdx_loose)
-                    & (data["Significance"] <= 30.0)
-                )
-                | ((data["cand_f51"] >= 0.95) & (data["Significance"] < dEdx_loose))
-            )
-        ]
-    elif unblind == 22:
-        data = data[
-            ~(
-                (
-                    (data["cand_f51"] >= f51_loose)
-                    & (data["cand_f51"] <= 1.0)
-                    & (data["Significance"] >= dEdx_loose)
-                    & (data["Significance"] <= 30.0)
-                )
-                | (
-                    (data["cand_f51"] >= 0.85)
-                    & (data["cand_f51"] <= 0.95)
-                    & (data["Significance"] < 9.0)
-                )
-            )
-        ]
+    # -------------------------------------------------------------------------
+    # Fixed lower f51 boundary for the unblind scan approaches.
+    #
+    # This is intentionally independent of the year-dependent f51_loose.
+    # -------------------------------------------------------------------------
+    f51_unblind_min = 0.85
 
-    region_counts = count_events_in_regions(data, regions, x_key="cand_f51", y_key="Significance")
-    N1, N2, N3, N4, N7 = (
-        region_counts["1"],
-        region_counts["2"],
-        region_counts["3"],
-        region_counts["4"],
-        region_counts["7"],
+    # -------------------------------------------------------------------------
+    # 01/02 family:
+    #
+    # 9501, 9601, ..., 9901 -> high-f51 strategy
+    # 9502, 9602, ..., 9902 -> intermediate-f51 strategy
+    #
+    # In this family, regions 5,6,8,9 must remain blinded.
+    # -------------------------------------------------------------------------
+    f51_unblind_map = {
+        9501: {"separator": 0.95, "region": "high"},
+        9502: {"separator": 0.95, "region": "intermediate"},
+
+        9601: {"separator": 0.96, "region": "high"},
+        9602: {"separator": 0.96, "region": "intermediate"},
+
+        9701: {"separator": 0.97, "region": "high"},
+        9702: {"separator": 0.97, "region": "intermediate"},
+
+        9801: {"separator": 0.98, "region": "high"},
+        9802: {"separator": 0.98, "region": "intermediate"},
+
+        9901: {"separator": 0.99, "region": "high"},
+        9902: {"separator": 0.99, "region": "intermediate"},
+    }
+
+    # -------------------------------------------------------------------------
+    # 03/04 family:
+    #
+    # 9503, 9603, ..., 9903 -> intermediate contribution, CRs unblinded
+    # 9504, 9604, ..., 9904 -> spike contribution, CRs unblinded
+    #
+    # In this family:
+    #   - regions 5,6,8 are unblinded
+    #   - region 9 remains blinded
+    # -------------------------------------------------------------------------
+    f51_unblind_568_map = {
+        9503: {"separator": 0.95, "component": "intermediate"},
+        9504: {"separator": 0.95, "component": "spike"},
+
+        9603: {"separator": 0.96, "component": "intermediate"},
+        9604: {"separator": 0.96, "component": "spike"},
+
+        9703: {"separator": 0.97, "component": "intermediate"},
+        9704: {"separator": 0.97, "component": "spike"},
+
+        9803: {"separator": 0.98, "component": "intermediate"},
+        9804: {"separator": 0.98, "component": "spike"},
+
+        9903: {"separator": 0.99, "component": "intermediate"},
+        9904: {"separator": 0.99, "component": "spike"},
+    }
+
+    # Legacy aliases.
+    legacy_unblind_aliases = {
+        21: 9501,
+        22: 9502,
+    }
+
+    resolved_unblind = legacy_unblind_aliases.get(unblind, unblind)
+
+    # -------------------------------------------------------------------------
+    # Region-mask helpers.
+    #
+    # These are important because the region blinding should be based on the
+    # ABCD region definitions, not only on f51 threshold cuts.
+    # -------------------------------------------------------------------------
+    def make_region_mask(region_id: str, frame=None) -> pd.Series:
+        if frame is None:
+            frame = data
+
+        region_row = regions[regions["region"].astype(str) == str(region_id)]
+
+        if len(region_row) != 1:
+            raise ValueError(
+                f"Expected exactly one definition for region {region_id}, "
+                f"found {len(region_row)}"
+            )
+
+        row = region_row.iloc[0]
+        eps = 1e-12
+
+        return (
+            (frame["cand_f51"] >= row["xmin"] - eps)
+            & (frame["cand_f51"] <= row["xmax"] + eps)
+            & (frame["Significance"] >= row["ymin"] - eps)
+            & (frame["Significance"] <= row["ymax"] + eps)
+        )
+
+    def make_regions_mask(region_ids, frame=None) -> pd.Series:
+        if frame is None:
+            frame = data
+
+        mask = pd.Series(False, index=frame.index)
+
+        for region_id in region_ids:
+            mask = mask | make_region_mask(region_id, frame=frame)
+
+        return mask
+
+    def make_region9_unblind_mask(frame=None) -> pd.Series:
+        """
+        Region 9 mask for the unblind scan.
+
+        The lower f51 boundary is fixed to f51_unblind_min = 0.85,
+        not to the year-dependent f51_loose.
+        """
+        if frame is None:
+            frame = data
+
+        region_row = regions[regions["region"].astype(str) == "9"]
+
+        if len(region_row) != 1:
+            raise ValueError(
+                f"Expected exactly one definition for region 9, found {len(region_row)}"
+            )
+
+        row = region_row.iloc[0]
+        eps = 1e-12
+
+        return (
+            (frame["cand_f51"] >= f51_unblind_min - eps)
+            & (frame["cand_f51"] <= row["xmax"] + eps)
+            & (frame["Significance"] >= row["ymin"] - eps)
+            & (frame["Significance"] <= row["ymax"] + eps)
+        )
+
+    def log_remaining_regions(region_ids, frame=None) -> None:
+        if frame is None:
+            frame = data
+
+        remaining = {
+            str(region_id): int(make_region_mask(str(region_id), frame=frame).sum())
+            for region_id in region_ids
+        }
+
+        LOGGER.info("Remaining events in regions %s: %s", region_ids, remaining)
+
+    # -------------------------------------------------------------------------
+    # Apply blinding / unblinding configuration.
+    # -------------------------------------------------------------------------
+    if unblind == 0:
+        # Default fully blinded ABCD mode:
+        # regions 5,6,8,9 are blinded.
+        regions_5689_blind = make_regions_mask(["5", "6", "8", "9"], frame=data)
+
+        LOGGER.info(
+            "unblind=0: removing regions 5/6/8/9, events removed=%d",
+            int(regions_5689_blind.sum()),
+        )
+
+        data = data.loc[~regions_5689_blind].copy()
+        log_remaining_regions(["5", "6", "8", "9"], frame=data)
+
+    elif unblind == 1:
+        # Regions 5,6,8 unblinded.
+        # Region 9 remains blinded.
+        region9_blind = make_region9_unblind_mask(frame=data)
+
+        LOGGER.info(
+            "unblind=1: removing region 9 only, events removed=%d",
+            int(region9_blind.sum()),
+        )
+
+        data = data.loc[~region9_blind].copy()
+        log_remaining_regions(["9"], frame=data)
+
+    elif resolved_unblind in f51_unblind_map:
+        # 9501/9502/.../9901/9902:
+        # regions 5,6,8,9 are blinded.
+        config = f51_unblind_map[resolved_unblind]
+
+        f51_separator = config["separator"]
+        f51_region = config["region"]
+
+        LOGGER.info(
+            "Using f51 scan with regions 5/6/8/9 blinded: "
+            "unblind=%s resolved_unblind=%s separator=%.2f region=%s "
+            "f51_unblind_min=%.2f",
+            unblind,
+            resolved_unblind,
+            f51_separator,
+            f51_region,
+            f51_unblind_min,
+        )
+
+        if f51_region == "high":
+            extra_blind = (
+                (data["cand_f51"] > f51_separator)
+                & (data["cand_f51"] <= 1.0)
+                & (data["Significance"] < dEdx_loose)
+            )
+
+        elif f51_region == "intermediate":
+            extra_blind = (
+                (data["cand_f51"] >= f51_unblind_min)
+                & (data["cand_f51"] <= f51_separator)
+                & (data["Significance"] < 9.0)
+            )
+
+        else:
+            raise ValueError(f"Unknown f51 region configuration: {f51_region}")
+
+        # Explicitly blind the ABCD regions, independent of f51_unblind_min.
+        # This is needed because Region 5 may start below f51 = 0.85.
+        regions_5689_blind = make_regions_mask(["5", "6", "8", "9"], frame=data)
+
+        total_blind = regions_5689_blind | extra_blind
+
+        LOGGER.info(
+            "Events removed from blinded regions 5/6/8/9: %d",
+            int(regions_5689_blind.sum()),
+        )
+        LOGGER.info(
+            "Events removed by f51 sideband extra_blind: %d",
+            int(extra_blind.sum()),
+        )
+
+        data = data.loc[~total_blind].copy()
+        log_remaining_regions(["5", "6", "8", "9"], frame=data)
+
+    elif resolved_unblind in f51_unblind_568_map:
+        # 9503/9504/.../9903/9904:
+        # regions 5,6,8 are unblinded.
+        # region 9 is blinded.
+        config = f51_unblind_568_map[resolved_unblind]
+
+        f51_separator = config["separator"]
+        f51_component = config["component"]
+
+        LOGGER.info(
+            "Using f51 scan with regions 5/6/8 unblinded and region 9 blinded: "
+            "unblind=%s resolved_unblind=%s separator=%.2f component=%s "
+            "f51_unblind_min=%.2f",
+            unblind,
+            resolved_unblind,
+            f51_separator,
+            f51_component,
+            f51_unblind_min,
+        )
+
+        region9_blind = make_region9_unblind_mask(frame=data)
+
+        # The f51 scan window starts at 0.85.
+        # Below 0.85 is kept as the ordinary low-f51 side.
+        f51_scan_window = (
+            (data["cand_f51"] >= f51_unblind_min)
+            & (data["cand_f51"] <= 1.0)
+        )
+
+        if f51_component == "intermediate":
+            # Keep only the intermediate contribution inside the scan window:
+            #
+            #   0.85 <= f51 <= separator
+            #
+            # Therefore remove the spike side:
+            #
+            #   f51 > separator
+            remove_other_component = (
+                f51_scan_window
+                & (data["cand_f51"] > f51_separator)
+            )
+
+        elif f51_component == "spike":
+            # Keep only the spike contribution inside the scan window:
+            #
+            #   f51 > separator
+            #
+            # Therefore remove the intermediate side:
+            #
+            #   0.85 <= f51 <= separator
+            remove_other_component = (
+                f51_scan_window
+                & (data["cand_f51"] <= f51_separator)
+            )
+
+        else:
+            raise ValueError(f"Unknown f51 component configuration: {f51_component}")
+
+        total_blind = region9_blind | remove_other_component
+
+        LOGGER.info(
+            "Events removed from region 9: %d",
+            int(region9_blind.sum()),
+        )
+        LOGGER.info(
+            "Events removed outside selected f51 component: %d",
+            int(remove_other_component.sum()),
+        )
+
+        data = data.loc[~total_blind].copy()
+
+        log_remaining_regions(["9"], frame=data)
+
+        # Regions 5,6,8 should be allowed to remain populated.
+        remaining_568 = {
+            region_id: int(make_region_mask(region_id, frame=data).sum())
+            for region_id in ["5", "6", "8"]
+        }
+        LOGGER.info(
+            "Remaining events in unblinded regions 5/6/8: %s",
+            remaining_568,
+        )
+
+    elif unblind == 2:
+        # Fully unblinded mode.
+        LOGGER.info("unblind=2: no additional blinding applied.")
+
+    else:
+        LOGGER.warning(
+            "Unrecognized unblind value %s. No unblind-specific filtering was applied.",
+            unblind,
+        )
+
+    # -------------------------------------------------------------------------
+    # Count events.
+    # -------------------------------------------------------------------------
+    region_counts = count_events_in_regions(
+        data,
+        regions,
+        x_key="cand_f51",
+        y_key="Significance",
     )
 
-    if unblind == 0:
-        for r in ["5", "6", "8", "9"]:
-            region_counts[r] = 0
-    elif unblind == 1:
-        region_counts["9"] = 0
+    N1, N2, N3, N4, N7 = (
+        region_counts.get("1", 0),
+        region_counts.get("2", 0),
+        region_counts.get("3", 0),
+        region_counts.get("4", 0),
+        region_counts.get("7", 0),
+    )
 
+    # -------------------------------------------------------------------------
+    # Calculate predicted counts.
+    # -------------------------------------------------------------------------
     N5 = calculate_region_count([N2, N4], [N1])
     N6 = calculate_region_count([N3, N4], [N1])
     N8 = calculate_region_count([N2, N7], [N1])
@@ -414,33 +699,111 @@ def ABCD_plot(
         "8": calculate_error(N8, [N2, N7, N1]),
     }
 
-    if unblind in [0, 1]:
-        N9 = calculate_region_count([N3, N7], [N1])
-        error_calculated_counts["9"] = calculate_error(N9, [N3, N7, N1])
-        calculated_counts = {"5": N5, "6": N6, "8": N8, "9": N9}
-    elif unblind == 2:
+    if unblind == 2:
         N9 = calculate_region_count([N3 + N6], [N1 + N2 + N4 + N5])
         error_calculated_counts["9"] = calculate_error(
-            N9, [N3 + N6, N7 + N8, N1 + N2 + N4 + N5]
+            N9,
+            [N3 + N6, N7 + N8, N1 + N2 + N4 + N5],
         )
-        calculated_counts = {"5": N5, "6": N6, "8": N8, "9": N9}
     else:
         N9 = calculate_region_count([N3, N7], [N1])
         error_calculated_counts["9"] = calculate_error(N9, [N3, N7, N1])
-        calculated_counts = {"5": N5, "6": N6, "8": N8, "9": N9}
 
-    LOGGER.info("Region Counts: %s", region_counts)
+    calculated_counts = {
+        "5": N5,
+        "6": N6,
+        "8": N8,
+        "9": N9,
+    }
+
+    # -------------------------------------------------------------------------
+    # Decide what is allowed to be shown on the plot.
+    #
+    # Rule:
+    #   - If a region is blinded, show only its predicted count.
+    #   - If a region is unblinded, show its actual count.
+    #   - If a region is unblinded and also has a prediction, show both.
+    # -------------------------------------------------------------------------
+    all_regions = {str(r) for r in regions["region"]}
+
+    if unblind == 0 or resolved_unblind in f51_unblind_map:
+        # Regions 5,6,8,9 are blinded.
+        visible_observed_regions = {"1", "2", "3", "4", "7"}
+
+    elif unblind == 1 or resolved_unblind in f51_unblind_568_map:
+        # Regions 5,6,8 are unblinded.
+        # Region 9 is blinded.
+        visible_observed_regions = {"1", "2", "3", "4", "5", "6", "7", "8"}
+
+    elif unblind == 2:
+        # Fully unblinded.
+        visible_observed_regions = all_regions
+
+    else:
+        visible_observed_regions = all_regions
+
+    visible_predicted_regions = set(calculated_counts.keys())
+
+    redacted_region_counts = {
+        str(region): count if str(region) in visible_observed_regions else "BLINDED"
+        for region, count in region_counts.items()
+    }
+
+    LOGGER.info("unblind=%s resolved_unblind=%s", unblind, resolved_unblind)
+    LOGGER.info("Visible observed regions: %s", sorted(visible_observed_regions))
+    LOGGER.info("Visible predicted regions: %s", sorted(visible_predicted_regions))
+    LOGGER.info(
+        "Region Counts, with blinded observed counts redacted: %s",
+        redacted_region_counts,
+    )
     LOGGER.info("Calculated Counts: %s", calculated_counts)
 
+    # -------------------------------------------------------------------------
+    # Plot.
+    # -------------------------------------------------------------------------
     hep.style.use("CMS")
     fig, ax = plt.subplots(figsize=(10, 8))
 
-    ax.text(0.00, 1.01, "CMS", transform=ax.transAxes, fontweight="bold", fontsize=20, ha="left", va="bottom")
-    ax.text(0.10, 1.01, "Preliminary", transform=ax.transAxes, fontsize=20, ha="left", va="bottom")
-    ax.text(0.48, 1.01, f"{trigger}", transform=ax.transAxes, fontsize=14, ha="left", va="bottom")
-    ax.text(1.00, 1.01, f"{year}", transform=ax.transAxes, fontweight="bold", fontsize=16, ha="right", va="bottom")
+    ax.text(
+        0.00,
+        1.01,
+        "CMS",
+        transform=ax.transAxes,
+        fontweight="bold",
+        fontsize=20,
+        ha="left",
+        va="bottom",
+    )
+    ax.text(
+        0.10,
+        1.01,
+        "Preliminary",
+        transform=ax.transAxes,
+        fontsize=20,
+        ha="left",
+        va="bottom",
+    )
+    ax.text(
+        0.48,
+        1.01,
+        f"{trigger}",
+        transform=ax.transAxes,
+        fontsize=14,
+        ha="left",
+        va="bottom",
+    )
+    ax.text(
+        1.00,
+        1.01,
+        f"{year}",
+        transform=ax.transAxes,
+        fontweight="bold",
+        fontsize=16,
+        ha="right",
+        va="bottom",
+    )
 
-    plt.hexbin(
+    ax.hexbin(
         data["cand_f51"],
         data["Significance"],
         gridsize=50,
@@ -465,29 +828,48 @@ def ABCD_plot(
 
         region = str(row["region"])
         xmid = (row["xmin"] + row["xmax"]) / 2
-        ymid = 0.5 + (row["ymin"] + row["ymax"]) / 2
+        ymin = row["ymin"]
+        ymax = row["ymax"]
+        height = ymax - ymin
+        ymid = 0.5 * (ymin + ymax)
+        #ymid = 0.5 + (row["ymin"] + row["ymax"]) / 2
 
-        if region in calculated_counts:
+        show_observed = region in visible_observed_regions
+        show_predicted = (
+            region in visible_predicted_regions
+            and region in calculated_counts
+            and region in error_calculated_counts
+        )
+
+        obs_y = ymid
+        pred_y = ymid
+
+        if show_observed and show_predicted:
+            pred_y = ymin + 0.72 * height
+            obs_y = ymin + 0.28 * height 
+
+        if show_predicted:
             ax.text(
                 xmid,
-                ymid,
-                f"\n {calculated_counts[region]:.5f} ± \n {error_calculated_counts[region]:.5f} ",
+                pred_y,
+                f"{calculated_counts[region]:.2f} ±\n{error_calculated_counts[region]:.2f}",
                 fontsize=14,
                 color="red",
                 ha="center",
                 va="center",
             )
-        ax.text(
-            xmid,
-            ymid,
-            f"\n {region_counts[region]}",
-            fontsize=14,
-            color="black",
-            ha="center",
-            va="center",
-        )
 
-    #ax.set_xlim(0, 0.95 if regions_scheme == "spike_out" else 1.05)
+        if show_observed:
+            ax.text(
+                xmid,
+                obs_y,
+                f"{region_counts.get(region, 0)}",
+                fontsize=14,
+                color="black",
+                ha="center",
+                va="center",
+            )
+
     ax.set_xlim(0, 1.05)
     ax.set_ylim(0, 30)
     ax.set_xlabel("f51", fontsize=20)
@@ -500,6 +882,7 @@ def ABCD_plot(
     plt.show()
 
     return data
+
 
 
 def runABCD(
