@@ -300,6 +300,7 @@ void MonoCuts::doAnalysis_altertriggers(vector<MonoCandidate> &cand, vector<Phot
 		bool ECut = evalE(cands);
 		bool ECut16 = evalE_16(cands);
 		bool F51Cut = evalF51(cands);
+		//bool F51Cut =  evalF51_closure(cands);
 		bool dEdXCut = evaldEdX(cands);
 		bool METCut = evalMET(cands);
 		bool METCut16 = evalMET_2016(cands);
@@ -372,7 +373,8 @@ void MonoCuts::doAnalysis_altertriggers(vector<MonoCandidate> &cand, vector<Phot
 		FillFlowHistogram(2,CutFlowCand_Energy,matching_option);
 
         MonoCandidate &Cand = CutFlowCand_Energy[0];
-		bool F51Cut = evalF51(Cand);
+		//bool F51Cut = evalF51(Cand);
+		bool F51Cut = evalF51_closure(Cand);
 		if(F51Cut) CutFlowCand_F51.push_back(Cand);
 	}
 
@@ -891,6 +893,8 @@ const double MonoCuts::distCut_ = 0.5;
 const double MonoCuts::hIsoCut_= 10;
 const double MonoCuts::dEdXSigCut_ = 9.0;
 const double MonoCuts::f51Cut_ = 0.85;
+const double MonoCuts::f51Cut_lower_ = 0.850;        // Lower boundary for ECAL MET spikes
+const double MonoCuts::f51Cut_upper_ = 0.990;        // Upper boundary for ECAL MET spikes
 const double MonoCuts::photonCut_ = 200;
 const double MonoCuts::dEdXSig_looseCut_ = 7;
 const double MonoCuts::f51_looseCut_= 0.75;
@@ -973,7 +977,7 @@ void MonoAnalyzerPhoton(string year, string mass, string process, bool matching_
         //cout << "Created output file at:" << "/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzer/Photon_Strategy/"+year+"/"+process+"/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root" << endl;
 
         // Central Production - PFMET strategy
-        TFile *oFile = new TFile(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzerPhoton/PFMET_Strategy/"+year+"/"+process+"/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root").c_str(),"recreate");
+        TFile *oFile = new TFile(("/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzerPhoton/PFMET_Strategy/ECAL_spikes_closure/"+year+"/"+process+"/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root").c_str(),"recreate");
 	//cout << "Created output file at:" << "/eos/user/t/tmenezes/Monopole_Ntuples/Central_Production/METcorrected_output_MonoAnalyzer/PFMET_Strategy/"+year+"/"+process+"/MonoPhotonAnalysis_"+year+"_"+mass+"_"+sys+"_"+matching+".root" << endl;
 
 	// Central Production - Photon strategy: modified e55

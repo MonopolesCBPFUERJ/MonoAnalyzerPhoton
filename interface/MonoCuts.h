@@ -258,6 +258,8 @@ public:
   static const double e55Cut_ ;
   static const double e55Cut2016_ ;
   static const double f51Cut_ ;
+  static const double f51Cut_lower_ ;
+  static const double f51Cut_upper_ ;
   static const double photonCut_ ;
   static const double dEdXSig_looseCut_ ;
   static const double f51_looseCut_ ;
@@ -294,6 +296,9 @@ private:
   bool evalE(MonoCandidate &mc) { return mc.e55_ > e55Cut_; }
   bool evalE_16(MonoCandidate &mc) { return mc.e55_ > e55Cut2016_; }
   bool evalF51(MonoCandidate &mc) { return mc.f51_ > f51Cut_ ; }
+  static bool evalF51_closure(const MonoCandidate &mc) {
+    return mc.f51_ > f51Cut_lower_ && mc.f51_ <= f51Cut_upper_;
+  }
   bool evaldEdX(MonoCandidate &mc) { return mc.dEdXSig_ > dEdXSigCut_ ;}
   bool evalPhoton(Photon &mc){ return mc.pho_pt_ > photonCut_; }
  
